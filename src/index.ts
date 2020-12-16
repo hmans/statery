@@ -1,17 +1,4 @@
-import { useEffect, useState } from "react"
-
-type State = { [key: string]: any }
-
-type StateUpdateFunction<T extends State> = (state: T) => Partial<T>
-
-type Store<T extends State> = {
-  set: (updates: Partial<T> | StateUpdateFunction<T>) => void
-  subscribe: (prop: string, listener: Listener) => void
-  unsubscribe: (prop: string, listener: Listener) => void
-  state: T
-}
-
-type Listener = Function
+import { Listener, State, StateUpdateFunction, Store } from "./types"
 
 export const makeStore = <T extends State>(state: T): Store<T> => {
   const listeners: { [prop: string]: Listener[] } = {}
@@ -41,15 +28,5 @@ export const makeStore = <T extends State>(state: T): Store<T> => {
   return { set, subscribe, unsubscribe, state }
 }
 
-/* Subscription hook */
-export const useStore = <T extends State>(store: Store<T>, prop: string) => {
-  const [, setVersion] = useState(0)
-
-  useEffect(() => {
-    const listener = () => setVersion((v) => v + 1)
-    store.subscribe(prop, listener)
-    return () => void store.unsubscribe(prop, listener)
-  }, [store, prop])
-
-  return store.state[prop]
-}
+export * from "./hooks"
+export * from "./types"
