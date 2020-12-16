@@ -17,7 +17,7 @@ describe("useStore", () => {
 
   it("provides a proxy that allows subscribing to individual properties", async () => {
     const store = makeStore({
-      wood: 8,
+      wood: 0,
       gold: 4,
       houses: 0
     })
@@ -33,7 +33,10 @@ describe("useStore", () => {
         gold: state.gold + 1
       }))
 
-    const canBuildHouse = (state: typeof store.state) => state.wood >= 5 && state.gold >= 5
+    const canBuildHouse = (state: typeof store.state) => {
+      const { wood, gold } = state
+      return wood >= 5 && gold >= 5
+    }
 
     const buildHouse = () =>
       store.set((state) =>
@@ -71,11 +74,16 @@ describe("useStore", () => {
 
     const Buttons = () => {
       buttonsRenderCount++
+
+      const proxy = useStore(store)
+
       return (
         <p>
           <button onClick={collectWood}>Collect Wood</button>
           <button onClick={sellWood}>Sell Wood</button>
-          <button onClick={buildHouse}>Build House</button>
+          <button onClick={buildHouse} disabled={!canBuildHouse(proxy)}>
+            Build House
+          </button>
         </p>
       )
     }
@@ -89,30 +97,33 @@ describe("useStore", () => {
       </>
     )
 
-    await findByText("Wood: 8")
+    await findByText("Wood: 0")
     await findByText("Houses: 0")
     await findByText("Gold: 4")
 
     fireEvent.click(getByText("Collect Wood"))
     fireEvent.click(getByText("Collect Wood"))
     fireEvent.click(getByText("Collect Wood"))
+    fireEvent.click(getByText("Collect Wood"))
+    fireEvent.click(getByText("Collect Wood"))
+    fireEvent.click(getByText("Collect Wood"))
 
-    await findByText("Wood: 11")
+    await findByText("Wood: 6")
 
     fireEvent.click(getByText("Sell Wood"))
 
-    await findByText("Wood: 10")
+    await findByText("Wood: 5")
     await findByText("Gold: 5")
     await findByText("Houses: 0")
 
     fireEvent.click(getByText("Build House"))
 
-    await findByText("Wood: 5")
+    await findByText("Wood: 0")
     await findByText("Gold: 0")
     await findByText("Houses: 1")
 
-    expect(woodRenderCount).toEqual(6)
+    expect(woodRenderCount).toEqual(9)
     expect(housesRenderCount).toEqual(2)
-    expect(buttonsRenderCount).toEqual(1)
+    expect(buttonsRenderCount).toEqual(9)
   })
 })
