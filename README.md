@@ -10,11 +10,11 @@ An extremely simple and just as experimental state management library for React.
 
 Anyway. If you still want to give the thing a go, keep reading.
 
-## Demos
+## DEMOS
 
 - [Example Clicker Game](https://codesandbox.io/s/statery-clicker-game-hjxk3?file=/src/App.tsx) (Codesandbox)
 
-## Basic Usage
+## BASIC USAGE
 
 ### Creating a Store
 
@@ -67,7 +67,7 @@ const Buttons = () => {
 }
 ```
 
-## Advanced Usage
+## ADVANCED USAGE
 
 ### Deriving Values from a Store
 
@@ -130,6 +130,13 @@ store.subscribe("count", console.log)
 
 store.unsubscribe("count", console.log)
 ```
+
+## NOTES
+
+### Stuff that probably needs work
+
+- [ ] Statery _probably_ has problems in React's Concurrent Mode. I haven't tried yet, but I will.
+- [ ] Probably other bits and pieces I haven't even encountered yet.
 
 ### Motivation & Assumptions
 
