@@ -19,13 +19,13 @@ Anyway. If you still want to give the thing a go, keep reading.
 ### Adding it to your Project
 
 ```
-yarn add statery
+npm install statery
 ```
 
 or
 
 ```
-npm install statery
+yarn add statery
 ```
 
 ### Creating a Store
