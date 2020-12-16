@@ -9,6 +9,7 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
+    "clean": "rimraf dist",
     "build": "rollup -c",
     "test": "jest"
   },
