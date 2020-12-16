@@ -33,8 +33,7 @@ describe("useStore", () => {
         gold: state.gold + 1
       }))
 
-    const canBuildHouse = (state: typeof store.state) => {
-      const { wood, gold } = state
+    const canBuildHouse = ({ wood, gold }: typeof store.state) => {
       return wood >= 5 && gold >= 5
     }
 
