@@ -1,4 +1,4 @@
-import { makeStore } from "../src"
+import { makeStore } from "../src/store"
 
 describe("makeStore", () => {
   const state = {
