@@ -33,6 +33,41 @@ const Wood = () => {
 
 Naturally, your components will **re-render** when the data they've accessed changes.
 
+Just like mutations, functions that derive values from the store's state can be written as standalone functions:
+
+```tsx
+const canBuyHouse = ({ wood, gold }) => wood >= 5 && gold >= 5
+```
+
+Due to the way Statery is designed, these will work both within mutation code...
+
+```tsx
+const buyHouse = () =>
+  gameState.set((state) =>
+    canBuyHouse(state)
+      ? {
+          wood: state.wood - 5,
+          gold: state.gold - 5,
+          houses: state.houses + 1
+        }
+      : {}
+  )
+```
+
+...as well as React components:
+
+```tsx
+const BuyHouseButton = () => {
+  const store = useStore(gameState)
+
+  return (
+    <button onClick={buyHouse} disabled={!canBuyHouse(store)}>
+      Buy House (5g, 5w)
+    </button>
+  )
+}
+```
+
 ### Updating the Store
 
 Update the store contents using its `set` function:
