@@ -33,12 +33,18 @@ describe("useStore", () => {
         gold: state.gold + 1
       }))
 
+    const canBuildHouse = (state: typeof store.state) => state.wood >= 5 && state.gold >= 5
+
     const buildHouse = () =>
-      store.set((state) => ({
-        wood: state.wood - 5,
-        gold: state.gold - 5,
-        houses: state.houses + 1
-      }))
+      store.set((state) =>
+        canBuildHouse(state)
+          ? {
+              wood: state.wood - 5,
+              gold: state.gold - 5,
+              houses: state.houses + 1
+            }
+          : {}
+      )
 
     let woodRenderCount = 0
     let goldRenderCount = 0
