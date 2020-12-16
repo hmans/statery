@@ -113,7 +113,7 @@ Note that you can also mutate the store this way; however, keep in mind that whe
 
 ### Subscribing to updates imperatively
 
-Use a store's `subscribe` function to register a callback that will be executed every time a specific property is changed.
+Use a store's `subscribe` function to register a callback that will be executed every time a specific property is changed. Listeners will be passed both the new as well as the previous value as arguments.
 
 ```ts
 const store = makeStore({ count: 0 })
