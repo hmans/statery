@@ -8,20 +8,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "prettier": {
-    "semi": false,
-    "trailingComma": "none",
-    "singleQuote": false,
-    "jsxBracketSameLine": true,
-    "tabWidth": 2,
-    "printWidth": 90
-  },
   "scripts": {
     "build": "rollup -c",
     "test": "jest"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.1.0",
+    "@testing-library/react": "^11.2.2",
     "@types/jest": "^26.0.19",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
