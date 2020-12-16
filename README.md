@@ -4,6 +4,10 @@ An extremely simple and just as experimental state management library for React.
 
 **Do not use this library. It's terrible.** In fact, do not use any other library, either. They're all terrible.
 
+### Demos
+
+- [Example Clicker Game](https://codesandbox.io/s/statery-clicker-game-hjxk3?file=/src/App.tsx) (Codesandbox)
+
 ### Creating a Store
 
 Statery stores wrap around plain old JavaScript objects:
