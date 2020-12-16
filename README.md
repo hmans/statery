@@ -33,6 +33,8 @@ yarn add statery
 Statery stores wrap around plain old JavaScript objects:
 
 ```ts
+import { makeStore } from "statery"
+
 const store = makeStore({
   wood: 8,
   houses: 0
@@ -44,6 +46,8 @@ const store = makeStore({
 Within a React component, use the `useStore` hook to read data from the store:
 
 ```tsx
+import { useStore } from "statery"
+
 const Wood = () => {
   const { wood } = useStore(store)
 
@@ -93,7 +97,7 @@ Due to the way Statery is designed, these will work both within mutation code...
 
 ```tsx
 const buyHouse = () =>
-  gameState.set((state) =>
+  store.set((state) =>
     canBuyHouse(state)
       ? {
           wood: state.wood - 5,
@@ -108,10 +112,10 @@ const buyHouse = () =>
 
 ```tsx
 const BuyHouseButton = () => {
-  const store = useStore(gameState)
+  const proxy = useStore(store)
 
   return (
-    <button onClick={buyHouse} disabled={!canBuyHouse(store)}>
+    <button onClick={buyHouse} disabled={!canBuyHouse(proxy)}>
       Buy House (5g, 5w)
     </button>
   )
