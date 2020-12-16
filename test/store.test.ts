@@ -47,5 +47,23 @@ describe("makeStore", () => {
       expect(fooChanges).toEqual(2)
       expect(barChanges).toEqual(1)
     })
+
+    it("feeds the changed values to the listener callback", () => {
+      let newFoo: number
+      let prevFoo: number
+
+      const listener = (newValue, prevValue) => {
+        newFoo = newValue
+        prevFoo = prevValue
+      }
+
+      store.set({ foo: 0 })
+      store.subscribe("foo", listener)
+      store.set({ foo: 1 })
+      store.unsubscribe("foo", listener)
+
+      expect(newFoo).toBe(1)
+      expect(prevFoo).toBe(0)
+    })
   })
 })

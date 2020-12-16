@@ -4,9 +4,11 @@ An extremely simple and just as experimental state management library for React.
 
 **Do not use this library. It's terrible.** In fact, do not use any other library, either. They're all terrible.
 
-### Demos
+## Demos
 
 - [Example Clicker Game](https://codesandbox.io/s/statery-clicker-game-hjxk3?file=/src/App.tsx) (Codesandbox)
+
+## Basic Usage
 
 ### Creating a Store
 
@@ -59,6 +61,8 @@ const Buttons = () => {
 }
 ```
 
+## Advanced Usage
+
 ### Deriving Values from a Store
 
 Just like mutations, functions that derive values from the store's state can be written as standalone functions:
@@ -82,7 +86,7 @@ const buyHouse = () =>
   )
 ```
 
-...as well as React components:
+...as well as React components, which will automatically be rerendered if any of the underlying data changes:
 
 ```tsx
 const BuyHouseButton = () => {
@@ -96,7 +100,30 @@ const BuyHouseButton = () => {
 }
 ```
 
-That's all there is to it!
+### Accessing the State Directly
+
+If, for any reason, you ever need to work with the underlying state object, you can use the store's `state` property:
+
+```ts
+const store = makeStore({ count: 0 })
+console.log(store.state.count)
+```
+
+Note that you can also mutate the store this way; however, keep in mind that when you do this, none of the subscribed listeners will be executed.
+
+### Subscribing to updates imperatively
+
+Use a store's `subscribe` function to register a callback that will be executed every time a specific property is changed.
+
+```ts
+const store = makeStore({ count: 0 })
+store.subscribe("count", console.log)
+
+/* Now every time an update is made to the the store's "count" property,
+   it will be logged to the console. */
+
+store.unsubscribe("count", console.log)
+```
 
 ### Motivation & Assumptions
 
