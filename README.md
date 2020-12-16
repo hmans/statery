@@ -1,5 +1,6 @@
 # STATERY
 
+![Status](https://img.shields.io/badge/status-experimental-orange)
 [![Build Size](https://img.shields.io/bundlephobia/min/statery?label=bundle%20size)](https://bundlephobia.com/result?p=statery)
 [![Version](https://img.shields.io/npm/v/statery)](https://www.npmjs.com/package/statery)
 [![Downloads](https://img.shields.io/npm/dt/statery.svg)](https://www.npmjs.com/package/statery)
