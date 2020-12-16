@@ -5,7 +5,7 @@
     "email": "hendrik@mans.de",
     "url": "https://hendrik.mans.de"
   },
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
