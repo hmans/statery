@@ -33,6 +33,34 @@ const Wood = () => {
 
 Naturally, your components will **re-render** when the data they've accessed changes.
 
+### Updating the Store
+
+Update the store contents using its `set` function:
+
+```tsx
+const collectWood = () =>
+  store.set((state) => ({
+    wood: state.wood + 1
+  }))
+
+const buildHouse = () =>
+  store.set((state) => ({
+    wood: state.wood - 10,
+    houses: state.houses + 1
+  }))
+
+const Buttons = () => {
+  return (
+    <p>
+      <button onClick={collectWood}>Collect Wood</button>
+      <button onClick={buildHouse}>Build House</button>
+    </p>
+  )
+}
+```
+
+### Deriving Values from a Store
+
 Just like mutations, functions that derive values from the store's state can be written as standalone functions:
 
 ```tsx
@@ -64,32 +92,6 @@ const BuyHouseButton = () => {
     <button onClick={buyHouse} disabled={!canBuyHouse(store)}>
       Buy House (5g, 5w)
     </button>
-  )
-}
-```
-
-### Updating the Store
-
-Update the store contents using its `set` function:
-
-```tsx
-const collectWood = () =>
-  store.set((state) => ({
-    wood: state.wood + 1
-  }))
-
-const buildHouse = () =>
-  store.set((state) => ({
-    wood: state.wood - 10,
-    houses: state.houses + 1
-  }))
-
-const Buttons = () => {
-  return (
-    <p>
-      <button onClick={collectWood}>Collect Wood</button>
-      <button onClick={buildHouse}>Build House</button>
-    </p>
   )
 }
 ```
