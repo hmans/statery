@@ -8,6 +8,7 @@
   "version": "0.0.6",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
