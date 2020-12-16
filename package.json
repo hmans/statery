@@ -17,7 +17,8 @@
     "printWidth": 90
   },
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "test": "jest"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.1.0",
@@ -25,6 +26,8 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "jest": "^26.6.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.35.1",
     "ts-jest": "^26.4.4",
