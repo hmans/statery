@@ -1,4 +1,5 @@
 import { makeStore } from "../src/store"
+import { Listener } from "../src/types"
 
 describe("makeStore", () => {
   const state = {
@@ -52,7 +53,7 @@ describe("makeStore", () => {
       let newFoo: number
       let prevFoo: number
 
-      const listener = (newValue, prevValue) => {
+      const listener: Listener<number> = (newValue, prevValue) => {
         newFoo = newValue
         prevFoo = prevValue
       }
