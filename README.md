@@ -9,6 +9,7 @@ An extremely simple and just as experimental state management library for React.
 - A store should only contain data. Mutators should just be normal functions that live outside of the store.
 - Consumers of a store are typically only interested in top-level changes to it.
 - We need (or rather: want) to support React functional components with hooks only.
+- Offer a minimal API surface. Ideally just one way to read from the store, not many.
 
 ### Examples
 

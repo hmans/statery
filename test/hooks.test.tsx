@@ -1,4 +1,4 @@
-import { act, render } from "@testing-library/react"
+import { fireEvent, render } from "@testing-library/react"
 import { makeStore, useStore } from "../src"
 
 describe("useStore", () => {
@@ -6,7 +6,7 @@ describe("useStore", () => {
     const store = makeStore({ counter: 123 })
 
     const Counter = () => {
-      const counter = useStore(store, "counter")
+      const { counter } = useStore(store)
       return <p>Counter: {counter}</p>
     }
 
@@ -15,27 +15,63 @@ describe("useStore", () => {
     await findByText("Counter: 123")
   })
 
-  it("re-renders the component when the data changes", async () => {
-    const store = makeStore({ counter: 123 })
+  it("provides a proxy that allows subscribing to individual properties", async () => {
+    const store = makeStore({ wood: 8, houses: 0 })
 
-    const increment = () => store.set(({ counter }) => ({ counter: counter + 1 }))
+    const collectWood = () => store.set((state) => ({ wood: state.wood + 1 }))
+    const buildHouse = () =>
+      store.set((state) => ({ wood: state.wood - 10, houses: state.houses + 1 }))
 
-    let renderCount = 0
+    let woodRenderCount = 0
+    let housesRenderCount = 0
+    let buttonsRenderCount = 0
 
-    const Counter = () => {
-      renderCount++
-      const counter = useStore(store, "counter")
-      return <p>Counter: {counter}</p>
+    const Wood = () => {
+      woodRenderCount++
+      const { wood } = useStore(store)
+      return <p>Wood: {wood}</p>
     }
 
-    const { findByText } = render(<Counter />)
+    const Houses = () => {
+      housesRenderCount++
+      const { houses } = useStore(store)
+      return <p>Houses: {houses}</p>
+    }
 
-    await findByText("Counter: 123")
-    act(increment)
-    await findByText("Counter: 124")
-    act(increment)
-    await findByText("Counter: 125")
+    const Buttons = () => {
+      buttonsRenderCount++
+      return (
+        <p>
+          <button onClick={collectWood}>Collect Wood</button>
+          <button onClick={buildHouse}>Build House</button>
+        </p>
+      )
+    }
 
-    expect(renderCount).toEqual(3)
+    const { getByText, findByText } = render(
+      <>
+        <Wood />
+        <Houses />
+        <Buttons />
+      </>
+    )
+
+    await findByText("Wood: 8")
+    await findByText("Houses: 0")
+
+    fireEvent.click(getByText("Collect Wood"))
+    fireEvent.click(getByText("Collect Wood"))
+
+    await findByText("Wood: 10")
+    await findByText("Houses: 0")
+
+    fireEvent.click(getByText("Build House"))
+
+    await findByText("Wood: 0")
+    await findByText("Houses: 1")
+
+    expect(woodRenderCount).toEqual(4)
+    expect(housesRenderCount).toEqual(2)
+    expect(buttonsRenderCount).toEqual(1)
   })
 })
