@@ -16,6 +16,18 @@ Anyway. If you still want to give the thing a go, keep reading.
 
 ## BASIC USAGE
 
+### Adding it to your Project
+
+```
+yarn add statery
+```
+
+or
+
+```
+npm install statery
+```
+
 ### Creating a Store
 
 Statery stores wrap around plain old JavaScript objects:
