@@ -5,7 +5,7 @@ type State = { [key: string]: any }
 type StateUpdateFunction<T extends State> = (state: T) => Partial<T>
 
 type Store<T extends State> = {
-  set: (updates: T | StateUpdateFunction<T>) => void
+  set: (updates: Partial<T> | StateUpdateFunction<T>) => void
   subscribe: (prop: string, listener: Listener) => void
   unsubscribe: (prop: string, listener: Listener) => void
   state: T
@@ -16,10 +16,9 @@ type Listener = Function
 export const makeStore = <T extends State>(state: T): Store<T> => {
   const listeners: { [prop: string]: Listener[] } = {}
 
-  const set = (updates: State | StateUpdateFunction<T>) => {
+  const set = (updates: Partial<T> | StateUpdateFunction<T>) => {
     /* Update state */
     const newProps = updates instanceof Function ? updates(state) : updates
-    console.log("Applying updates:", newProps)
     Object.assign(state, newProps)
 
     /* Execute listeners */
