@@ -1,5 +1,9 @@
 # STATERY
 
+[![Build Size](https://img.shields.io/bundlephobia/min/statery?label=bundle%20size)](https://bundlephobia.com/result?p=zustand)
+[![Version](https://img.shields.io/npm/v/statery)](https://www.npmjs.com/package/zustand)
+[![Downloads](https://img.shields.io/npm/dt/statery.svg)](https://www.npmjs.com/package/zustand)
+
 An extremely simple and just as experimental state management library for React. Yes, _another one_. Honestly, even I don't know why this exists. I had an idea and just _had_ to try it, and yet another NPM package was born.
 
 **Do not use this library. It's terrible.** In fact, do not use any other library, either. They're all terrible. Code is bad and we should all be spending more time outside instead.
