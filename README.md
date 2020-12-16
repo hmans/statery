@@ -1,8 +1,10 @@
-# Statery
+# STATERY
 
 An extremely simple and just as experimental state management library for React. Yes, _another one_. Honestly, even I don't know why this exists. I had an idea and just _had_ to try it, and yet another NPM package was born.
 
-**Do not use this library. It's terrible.** In fact, do not use any other library, either. They're all terrible.
+**Do not use this library. It's terrible.** In fact, do not use any other library, either. They're all terrible. Code is bad and we should all be spending more time outside instead.
+
+Anyway. If you still want to give the thing a go, keep reading.
 
 ## Demos
 
@@ -102,14 +104,14 @@ const BuyHouseButton = () => {
 
 ### Accessing the State Directly
 
-If, for any reason, you ever need to work with the underlying state object, you can use the store's `state` property:
+If, for any reason, you ever need to work with the underlying state object without any potentially unwanted magic happening, you can use the store's `state` property to access it directly:
 
 ```ts
 const store = makeStore({ count: 0 })
 console.log(store.state.count)
 ```
 
-Note that you can also mutate the store this way; however, keep in mind that when you do this, none of the subscribed listeners will be executed.
+**Note:** this won't stop you from mutating the state object. Keep in mind that when you do this, none of the subscribed listeners will be executed.
 
 ### Subscribing to updates imperatively
 
@@ -127,7 +129,7 @@ store.unsubscribe("count", console.log)
 
 ### Motivation & Assumptions
 
-There are more React state management libraries out there than _actual state_, so why build another one? Frankly, I have no excuse. I know. Everything is terrible.
+There are more React state management libraries out there than _actual state_, so why build another one? Frankly, I have no excuse. I know. Everything is terrible. I am terrible.
 
 However, I've always felt that there was a state management solution missing that worked exactly the way _I_ wanted, and let me tell you, I only ever want simple things.
 
