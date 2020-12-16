@@ -12,7 +12,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "rollup -c",
+    "build": "yarn clean && rollup -c && tree dist",
     "test": "jest"
   },
   "devDependencies": {
