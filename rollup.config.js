@@ -1,11 +1,31 @@
-import typescript from "@rollup/plugin-typescript"
+import typescript from "rollup-plugin-typescript2"
+import pkg from "./package.json"
 
-export default {
-  input: "src/index.ts",
-  output: {
-    // file: "dist/index.js",
-    dir: "dist",
-    format: "cjs"
+const plugins = [
+  typescript({
+    typescript: require("typescript")
+  })
+]
+
+const input = "src/index.ts"
+
+export default [
+  {
+    input,
+    plugins,
+    output: {
+      file: pkg.main,
+      format: "cjs",
+      sourcemap: true
+    }
   },
-  plugins: [typescript()]
-}
+  {
+    input,
+    plugins,
+    output: {
+      file: pkg.module,
+      format: "esm",
+      sourcemap: true
+    }
+  }
+]
