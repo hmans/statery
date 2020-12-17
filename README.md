@@ -179,12 +179,14 @@ store.unsubscribe(console.log)
 
 ### TypeScript support
 
-Statery is written in TypeScript, and its stores are fully typed. If you're about to update a store with a property that it doesn't know about, TypeScript will warn you. If the state structure `makeStore` infers from its initial state argument is not good enough, you can explicitly pass a store type as `makeStore`'s type parameter:
+Statery is written in TypeScript, and its stores are fully typed. `useStore` knows about the structure of your store, and if you're about to update a store with a property that it doesn't know about, TypeScript will warn you.
+
+If the state structure `makeStore` infers from its initial state argument is not what you want, you can explicitly pass a store type to `makeStore`:
 
 ```tsx
 const store = makeStore<{ name?: string }>({})
 store.set({ name: "Statery" }) // ✅  All good
-store.set({ foo: 123 }) // 😭  TypeScript warnin
+store.set({ foo: 123 }) // 😭  TypeScript warning
 ```
 
 ## NOTES
