@@ -5,15 +5,21 @@
 [![Version](https://img.shields.io/npm/v/statery)](https://www.npmjs.com/package/statery)
 [![Downloads](https://img.shields.io/npm/dt/statery.svg)](https://www.npmjs.com/package/statery)
 
-An extremely simple and just as experimental state management library for React. Yes, _another one_. Honestly, even I don't know why this exists. I had an idea and just _had_ to try it, and yet another NPM package was born.
+## Surprise-Free State Management!
 
-**Do not use this library. It's terrible.** In fact, do not use any other library, either. They're all terrible. Code is bad and we should all be spending more time outside instead.
+### Features 🎉
 
-Anyway. If you still want to give the thing a go, keep reading.
+- Simple, **noise- and surprise-free API**. Check out the [demo](https://codesandbox.io/s/statery-clicker-game-hjxk3?file=/src/App.tsx)!
+- **Extremely compact**, both in bundle size as well as API surface (2 exported functions!)
+- Fully **tested**, fully **typed**!
+- **Designed for React** (with functional components and hooks), but can also be used **without it**.
 
-## DEMOS
+### Non-Features 🧤
 
-- [Example Clicker Game](https://codesandbox.io/s/statery-clicker-game-hjxk3?file=/src/App.tsx) (Codesandbox)
+- Provides a simple `set` function for updating a store and not much else. If you want to use **reducers** or libraries like [Immer](https://github.com/immerjs/immer), these can easily sit on top of your Statery store.
+- Currently no support for (or concept of) **middlewares**, but this may change in the future.
+- While the `useStore` hook makes use of proxies, the store contents themselves are never wrapped in proxy objects. (If you're looking for a fully proxy-based solution, I recommend [Valtio](https://github.com/pmndrs/valtio).)
+- React Class Components are not supported (but PRs welcome!)
 
 ## BASIC USAGE
 
@@ -178,18 +184,6 @@ store.set({ foo: 123 }) // 😭  TypeScript warnin
 - [ ] No support for middleware yet. Haven't decided on an API that is adequately simple.
 - [ ] Probably other bits and pieces I haven't even encountered yet.
 
-### Motivation & Assumptions
+### Prior Art & Credits
 
-There are more React state management libraries out there than _actual state_, so why build another one? Frankly, I have no excuse. I know. Everything is terrible. I am terrible.
-
-However, I've always felt that there was a state management solution missing that worked exactly the way _I_ wanted, and let me tell you, I only ever want simple things.
-
-State management should be simple, both in use as well as implementation.
-
-Statery makes a couple of assumptions that you may or may not agree with:
-
-- A store's state should only ever contain data. Code that mutates a store should live outside of it. The store should only provide a single `set` method that updates its state, everything else should be left to the user.
-- Consumers of a store -- React components etc. -- are _typically_ only interested in top-level changes to its state. Subscribing to deeply nested properties is usually a sign that your store is getting too complex, and should be split apart.
-- It's 2020, and we only need to support modern React: functional components and hooks. Yes, I know that component classes will stay officially supported. No, I don't plan on supporting them (but will happily accept a PR if someone feels like providing one.)
-- The library implementing the store should only expose a minimal API surface. There should only be a single way to update a store, and a single way to read from it.
-- Type support should be _flawless_.
+Statery was born after spending a lot of time with the excellent state management libraries provided by the [Poimandres](https://github.com/pmndrs) collective, [Zustand](https://github.com/pmndrs/zustand) and [Valtio](https://github.com/pmndrs/valtio). Statery started out as an almost-clone of Zustand, but with the aim of providing an even simpler API. The `useStore` hook API was inspired by Valtio's very nice `useProxy`.

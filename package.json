@@ -5,6 +5,14 @@
     "email": "hendrik@mans.de",
     "url": "https://hendrik.mans.de"
   },
+  "description": "A happy little state management library for React and friends.",
+  "homepage": "https://github.com/hmans/statery",
+  "keywords": [
+    "react",
+    "state",
+    "state-management",
+    "hooks"
+  ],
   "version": "0.4.0-0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -15,6 +23,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
+    "dev": "yarn clean && rollup -c -w",
     "build": "yarn clean && rollup -c && tree dist",
     "test": "jest"
   },
