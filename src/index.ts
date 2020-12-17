@@ -23,7 +23,7 @@ export type State = Record<string | number, any>
  * Statery stores wrap around a State object and provide a few functions to update them
  * and, in turn, subscribe to updates.
  */
-export type Store<T extends State> = {
+export type Store<T extends State = State> = {
   /**
    * Return the current state.
    */
