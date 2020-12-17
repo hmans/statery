@@ -40,12 +40,12 @@ export type Store<T extends State> = {
    *
    * @see Listener
    */
-  subscribe: (listener: Listener) => void
+  subscribe: (listener: Listener<T>) => void
 
   /**
    * Unsubscribe a listener from being invoked when the the store changes.
    */
-  unsubscribe: (listener: Listener) => void
+  unsubscribe: (listener: Listener<T>) => void
 
   /**
    * The state itself.
@@ -57,11 +57,8 @@ export type StateUpdateFunction<T extends State> = (state: T) => Partial<T>
 
 /**
  * A callback that can be passed to a store's `subscribe` and `unsubscribe` functions.
- * When a store is modified, this will be invoked for every updated property.
- * The name of the updated property as well as its new and previous value are passed
- * as arguments.
  */
-export type Listener<T = any> = (prop: string | number, newValue: T, prevValue: T) => void
+export type Listener<T extends State> = (updates: Partial<T>, state: T) => void
 
 /*
 
@@ -84,23 +81,20 @@ export type Listener<T = any> = (prop: string | number, newValue: T, prevValue: 
  * @param state The state object that will be wrapped by the store.
  */
 export const makeStore = <T extends State>(state: T): Store<T> => {
-  let listeners = new Array<Listener>()
+  let listeners = new Array<Listener<T>>()
 
   const set = (updates: Partial<T> | StateUpdateFunction<T>) => {
     /* Update state */
     const newProps = updates instanceof Function ? updates(state) : updates
 
     /* Execute listeners */
-    for (const prop in newProps) {
-      const newValue = newProps[prop]
-      const prevValue = state[prop]
-
-      Object.assign(state, { [prop]: newValue })
-
-      listeners.forEach((listener) => {
-        listener(prop, newValue, prevValue)
-      })
+    if (listeners.length > 0) {
+      const prevState = { ...state } // TODO: nope nope nope
+      for (const listener of listeners) listener(newProps, prevState)
     }
+
+    /* Apply updates */
+    Object.assign(state, newProps)
   }
 
   const subscribe = (listener: Listener<any>) => {
@@ -143,11 +137,15 @@ export const useStore = <T extends State>(store: Store<T>): T => {
 
   /* Subscribe to changes in the store. */
   useEffect(() => {
-    const listener: Listener = (p: keyof T) => {
-      /* If this is the prop we're interested in, bump our version. */
-      if (interestingProps.has(p)) setVersion((v) => v + 1)
+    const listener: Listener<T> = (updates: Partial<T>) => {
+      /* If there is at least one prop being updated that we're interested in,
+         bump our local version. */
+      if (Object.keys(updates).find((prop) => interestingProps.has(prop))) {
+        setVersion((v) => v + 1)
+      }
     }
 
+    /* Mount & unmount the listener */
     store.subscribe(listener)
     return () => void store.unsubscribe(listener)
   }, [store])
