@@ -12,7 +12,7 @@ it's  ███████║   ██║   ██║  ██║   ██║   
 
 ![Status](https://img.shields.io/badge/status-experimental-orange)
 [![Version](https://img.shields.io/npm/v/statery)](https://www.npmjs.com/package/statery)
-![CI](https://github.com/hmans/statery/workflows/CI/badge.svg)
+[![CI](https://github.com/hmans/statery/workflows/CI/badge.svg)](https://github.com/hmans/statery/actions?query=workflow%3ACI)
 [![Downloads](https://img.shields.io/npm/dt/statery.svg)](https://www.npmjs.com/package/statery)
 [![Bundle Size](https://img.shields.io/bundlephobia/min/statery?label=bundle%20size)](https://bundlephobia.com/result?p=statery)
 
