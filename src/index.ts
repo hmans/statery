@@ -25,6 +25,11 @@ export type State = Record<string | number, any>
  */
 export type Store<T extends State> = {
   /**
+   * Return the current state.
+   */
+  state: T
+
+  /**
    * Updates the store. Accepts an object that will be (shallow-)merged into the store's state,
    * or a callback that will be invoked with the current state and is expected to return an object
    * containing updates.
@@ -46,11 +51,6 @@ export type Store<T extends State> = {
    * Unsubscribe a listener from being invoked when the the store changes.
    */
   unsubscribe: (listener: Listener<T>) => void
-
-  /**
-   * The state itself.
-   */
-  state: T
 }
 
 export type StateUpdateFunction<T extends State> = (state: T) => Partial<T>
@@ -84,7 +84,9 @@ export const makeStore = <T extends State>(state: T): Store<T> => {
   let listeners = new Array<Listener<T>>()
 
   return {
-    state,
+    get state() {
+      return state
+    },
 
     set: (updates) => {
       /* Get new properties */
