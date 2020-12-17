@@ -159,6 +159,16 @@ store.set((state) => ({ count: state.count + 1 }))
 store.unsubscribe(console.log)
 ```
 
+### TypeScript support
+
+Statery is written in TypeScript, and its stores are fully typed. If you're about to update a store with a property that it doesn't know about, TypeScript will warn you. If the state structure `makeStore` infers from its initial state argument is not good enough, you can explicitly pass a store type as `makeStore`'s type parameter:
+
+```tsx
+const store = makeStore<{ name?: string }>({})
+store.set({ name: "Statery" }) // ✅  All good
+store.set({ foo: 123 }) // 😭  TypeScript warnin
+```
+
 ## NOTES
 
 ### Stuff that probably needs work
