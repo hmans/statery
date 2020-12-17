@@ -35,8 +35,8 @@ export type Store<T extends State> = {
 
   /**
    * Subscribe to changes to the store's state. Every time the store is updated, the provided
-   * listener callback will be invoked for every updated property, passing its name, new value and
-   * previous value as its arguments.
+   * listener callback will be invoked, with the object containing the updates passed as the
+   * first argument, and the previous state as the second.
    *
    * @see Listener
    */
