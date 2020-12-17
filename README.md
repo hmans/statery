@@ -77,13 +77,19 @@ yarn add statery
 
 ### Creating a Store
 
-Statery stores wrap around plain old JavaScript objects:
+Statery stores wrap around plain old JavaScript objects that are free to contain any kind of data:
 
 ```ts
 import { makeStore } from "statery"
 
 const store = makeStore({
-  wood: 8,
+  player: {
+    id: 1,
+    name: "John Doe",
+    email: "john@doe.com"
+  },
+  gold: 100,
+  wood: 0,
   houses: 0
 })
 ```
