@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 /*
 
@@ -125,36 +125,35 @@ export const makeStore = <T extends State>(state: T): Store<T> => {
  * @param store The Statery store to access.
  */
 export const useStore = <T extends State>(store: Store<T>): T => {
-  return new Proxy<Record<any, any>>(
-    {},
-    {
-      get: (cache, prop: keyof T) => {
-        /* We don't want to create a new hook every time this property is accessed,
-           so let's memoize its value. */
-        if (!cache.hasOwnProperty(prop)) cache[prop] = useStoreProperty(store, prop)
-
-        /* Return the value of the property. */
-        return cache[prop]
-      }
-    }
-  )
-}
-
-const useStoreProperty = <T extends State>(store: Store<T>, prop: keyof T) => {
   /* A cheap version state that we will bump in order to re-render the component. */
   const [, setVersion] = useState(0)
 
-  /* Subscribe to changes of the requested property. */
+  const interestingPropsRef = useRef(new Array<keyof T>())
+  const interestingProps = interestingPropsRef.current
+
+  /* Subscribe to changes in the store. */
   useEffect(() => {
     const listener: Listener = (p) => {
       /* If this is the prop we're interested in, bump our version. */
-      if (p === prop) setVersion((v) => v + 1)
+      if (interestingProps.includes(p)) setVersion((v) => v + 1)
     }
 
     store.subscribe(listener)
     return () => void store.unsubscribe(listener)
-  }, [store, prop])
+  }, [store])
 
-  /* Return the requested property from our state. */
-  return store.state[prop]
+  return new Proxy<Record<any, any>>(
+    {},
+    {
+      get: (cache, prop: keyof T) => {
+        /* Add the prop we're interested in to the list of props */
+        if (!interestingProps.includes(prop)) {
+          interestingProps.push(prop)
+        }
+
+        /* Return the value of the property. */
+        return store.state[prop]
+      }
+    }
+  )
 }

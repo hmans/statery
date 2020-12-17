@@ -33,13 +33,12 @@ describe("useStore", () => {
         gold: state.gold + 1
       }))
 
-    const canBuildHouse = ({ wood, gold }: typeof store.state) => {
-      return wood >= 5 && gold >= 5
+    /* Instead of destructuring the store's state in the parameter signature, we will
+       create a situation where we will return early if state.wood is not >= 5, in order to
+       test for bugs like this one: https://github.com/hmans/statery/issues/1 */
+    const canBuildHouse = (state: typeof store.state) => {
+      return state.wood >= 5 && state.gold >= 5
     }
-
-    // const canBuildHouse = (state: typeof store.state) => {
-    //   return state.wood >= 5 && state.gold >= 5
-    // }
 
     const buildHouse = () =>
       store.set((state) =>
