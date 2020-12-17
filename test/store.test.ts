@@ -28,6 +28,11 @@ describe("makeStore", () => {
       store.set(({ foo }) => ({ foo: foo + 1 }))
       expect(store.state.foo).toEqual(current + 1)
     })
+
+    it("returns the updated state", () => {
+      const result = store.set({ foo: 1 })
+      expect(result).toEqual({ foo: 1, bar: 0 })
+    })
   })
 
   describe(".subscribe", () => {

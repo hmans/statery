@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from "react"
 */
 
 /**
- * The state objects wrapped by Statery stores are any JavaScript objects that
+ * The state objects managed by Statery stores are any JavaScript objects that
  * can be indexed using strings and/or numbers.
  */
 export type State = Record<string | number, any>
@@ -30,13 +30,15 @@ export type Store<T extends State> = {
   state: T
 
   /**
-   * Updates the store. Accepts an object that will be (shallow-)merged into the store's state,
+   * Updates the store. Accepts an object that will be (shallow-)merged into the current state,
    * or a callback that will be invoked with the current state and is expected to return an object
    * containing updates.
    *
+   * Returns the updated version of the store.
+   *
    * @see StateUpdateFunction
    */
-  set: (updates: Partial<T> | StateUpdateFunction<T>) => void
+  set: (updates: Partial<T> | StateUpdateFunction<T>) => T
 
   /**
    * Subscribe to changes to the store's state. Every time the store is updated, the provided
@@ -100,6 +102,8 @@ export const makeStore = <T extends State>(initialState: T): Store<T> => {
 
       /* Apply updates */
       state = { ...state, ...updates }
+
+      return state
     },
 
     subscribe: (listener) => {
