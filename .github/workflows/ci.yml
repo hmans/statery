@@ -4,40 +4,19 @@ on:
   push:
     branches: [master]
   pull_request:
-    types: [opened, synchronize]
+    branches: [master]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-      - run: yarn install --frozen-lockfile --check-files
-      - run: yarn build
-      - uses: actions/cache@v1
-        id: cache-build
-        with:
-          path: "."
-          key: ${{ github.sha }}
 
-  # lint:
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   steps:
-  #     - uses: actions/cache@v1
-  #       id: restore-build
-  #       with:
-  #         path: "."
-  #         key: ${{ github.sha }}
-  #     - run: yarn eslint:ci
+      - name: Install dependencies
+        run: yarn install
 
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/cache@v1
-        id: restore-build
-        with:
-          path: "."
-          key: ${{ github.sha }}
-      - run: yarn test
+      - name: Build package
+        run: yarn build
+
+      - name: Run tests
+        run: yarn test
