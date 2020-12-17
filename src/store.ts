@@ -2,6 +2,13 @@ import { Listener, State, StateUpdateFunction, Store } from "./types"
 
 type ListenerMap<T extends State> = Record<keyof T, Listener[]>
 
+/**
+ * Creates a Statery store that wraps around a state object.
+ *
+ * Keep in mind that the state object will be mutated by the store.
+ *
+ * @param state The state object that will be wrapped by the store.
+ */
 export const makeStore = <T extends State>(state: T): Store<T> => {
   const listeners = {} as ListenerMap<T>
 
