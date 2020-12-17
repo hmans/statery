@@ -80,7 +80,8 @@ export type Listener<T extends State> = (updates: Partial<T>, state: T) => void
  *
  * @param state The state object that will be wrapped by the store.
  */
-export const makeStore = <T extends State>(state: T): Store<T> => {
+export const makeStore = <T extends State>(initialState: T): Store<T> => {
+  let state = initialState
   let listeners = new Array<Listener<T>>()
 
   return {
@@ -94,12 +95,11 @@ export const makeStore = <T extends State>(state: T): Store<T> => {
 
       /* Execute listeners */
       if (listeners.length > 0) {
-        const prevState = { ...state } // TODO: nope nope nope
-        for (const listener of listeners) listener(newProps, prevState)
+        for (const listener of listeners) listener(newProps, state)
       }
 
       /* Apply updates */
-      Object.assign(state, newProps)
+      state = { ...state, ...newProps }
     },
 
     subscribe: (listener) => {

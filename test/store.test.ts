@@ -1,12 +1,10 @@
 import { Listener, makeStore } from "../src"
 
 describe("makeStore", () => {
-  const state = {
+  const store = makeStore({
     foo: 0,
     bar: 0
-  }
-
-  const store = makeStore(state)
+  })
 
   beforeEach(() => {
     store.set({ foo: 0, bar: 0 })
@@ -14,21 +12,21 @@ describe("makeStore", () => {
 
   describe(".state", () => {
     it("provides direct access to the state object", () => {
-      expect(store.state).toBe(state)
+      expect(store.state).toEqual({ foo: 0, bar: 0 })
     })
   })
 
   describe(".set", () => {
     it("accepts a dictionary of updates to the state", () => {
       store.set({ foo: 10 })
-      expect(state.foo).toEqual(10)
+      expect(store.state.foo).toEqual(10)
     })
 
     it("accepts a function that accepts the state and returns an update dictionary", () => {
-      const current = state.foo
-      expect(state.foo).toEqual(current)
+      const current = store.state.foo
+      expect(store.state.foo).toEqual(current)
       store.set(({ foo }) => ({ foo: foo + 1 }))
-      expect(state.foo).toEqual(current + 1)
+      expect(store.state.foo).toEqual(current + 1)
     })
   })
 
