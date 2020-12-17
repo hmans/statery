@@ -42,22 +42,6 @@ const store = makeStore({
 })
 ```
 
-### Reading from a Store
-
-Within a React component, use the `useStore` hook to read data from the store:
-
-```tsx
-import { useStore } from "statery"
-
-const Wood = () => {
-  const { wood } = useStore(store)
-
-  return <p>Wood: {wood}</p>
-}
-```
-
-Naturally, your components will **re-render** when the data they've accessed changes.
-
 ### Updating the Store
 
 Update the store contents using its `set` function:
@@ -84,6 +68,33 @@ const Buttons = () => {
 }
 ```
 
+Updates will be shallow-merged with the current state, meaning that properties you don't update will not be touched.
+
+### Reading from a Store (React)
+
+Within a React component, use the `useStore` hook to read data from the store:
+
+```tsx
+import { useStore } from "statery"
+
+const Wood = () => {
+  const { wood } = useStore(store)
+
+  return <p>Wood: {wood}</p>
+}
+```
+
+Naturally, your components will **re-render automatically** when the data they've accessed changes.
+
+### Reading from a Store (outside of React)
+
+A Statery store provides access to its current state through its `state` property:
+
+```ts
+const store = makeStore({ count: 0 })
+console.log(store.state.count)
+```
+
 ## ADVANCED USAGE
 
 ### Deriving Values from a Store
@@ -94,7 +105,15 @@ Just like mutations, functions that derive values from the store's state can be 
 const canBuyHouse = ({ wood, gold }) => wood >= 5 && gold >= 5
 ```
 
-Due to the way Statery is designed, these will work both within mutation code...
+These will work from within plain imperative JavaScript code...
+
+```tsx
+if (canBuyHouse(store.state)) {
+  console.log("Let's buy a house!")
+}
+```
+
+...mutation code...
 
 ```tsx
 const buyHouse = () =>
@@ -123,37 +142,40 @@ const BuyHouseButton = () => {
 }
 ```
 
-### Accessing the State Directly
+### Subscribing to updates (imperatively)
 
-If, for any reason, you ever need to work with the underlying state object without any potentially unwanted magic happening, you can use the store's `state` property to access it directly:
+Use a store's `subscribe` function to register a callback that will be executed every time the store is changed.
+The callback will receive both an object containing of the changes, as well as the store's current state.
 
 ```ts
 const store = makeStore({ count: 0 })
-console.log(store.state.count)
+
+const listener = (changes, state) => {
+  console.log("Applying changes:", changes)
+}
+
+store.subscribe(console.log)
+store.set((state) => ({ count: state.count + 1 }))
+store.unsubscribe(console.log)
 ```
 
-**Note:** this won't stop you from mutating the state object. Keep in mind that when you do this, none of the subscribed listeners will be executed.
+### TypeScript support
 
-### Subscribing to updates imperatively
+Statery is written in TypeScript, and its stores are fully typed. If you're about to update a store with a property that it doesn't know about, TypeScript will warn you. If the state structure `makeStore` infers from its initial state argument is not good enough, you can explicitly pass a store type as `makeStore`'s type parameter:
 
-Use a store's `subscribe` function to register a callback that will be executed every time a specific property is changed. Listeners will be passed both the new as well as the previous value as arguments.
-
-```ts
-const store = makeStore({ count: 0 })
-store.subscribe("count", console.log)
-
-/* Now every time an update is made to the the store's "count" property,
-   it will be logged to the console. */
-
-store.unsubscribe("count", console.log)
+```tsx
+const store = makeStore<{ name?: string }>({})
+store.set({ name: "Statery" }) // ✅  All good
+store.set({ foo: 123 }) // 😭  TypeScript warnin
 ```
 
 ## NOTES
 
 ### Stuff that probably needs work
 
+- [ ] I have yet to try how well Statery works with async updating of the store.
 - [ ] Statery _probably_ has problems in React's Concurrent Mode. I haven't tried yet, but I will.
-- [ ] Support for middleware. Haven't decided on an API that is adequately simple.
+- [ ] No support for middleware yet. Haven't decided on an API that is adequately simple.
 - [ ] Probably other bits and pieces I haven't even encountered yet.
 
 ### Motivation & Assumptions
