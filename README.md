@@ -88,7 +88,7 @@ const Buttons = () => {
 
 Updates will be shallow-merged with the current state, meaning that properties you don't update will not be touched.
 
-### Reading from a Store (React)
+### Reading from a Store (with React)
 
 Within a React component, use the `useStore` hook to read data from the store:
 
@@ -104,7 +104,7 @@ const Wood = () => {
 
 Naturally, your components will **re-render automatically** when the data they've accessed changes.
 
-### Reading from a Store (outside of React)
+### Reading from a Store (without React)
 
 A Statery store provides access to its current state through its `state` property:
 
@@ -112,6 +112,8 @@ A Statery store provides access to its current state through its `state` propert
 const store = makeStore({ count: 0 })
 console.log(store.state.count)
 ```
+
+You can also imperatively [subscribe to updates](#subscribing-to-updates-imperatively).
 
 ## ADVANCED USAGE
 
@@ -177,6 +179,17 @@ store.set((state) => ({ count: state.count + 1 }))
 store.unsubscribe(console.log)
 ```
 
+### Async updates
+
+Your Statery store doesn't know or care about asynchronicity -- simply call `set` whenever your data is ready:
+
+```ts
+const fetchPosts = async () => {
+  const posts = await loadPosts()
+  store.set({ posts })
+}
+```
+
 ### TypeScript support
 
 Statery is written in TypeScript, and its stores are fully typed. `useStore` knows about the structure of your store, and if you're about to update a store with a property that it doesn't know about, TypeScript will warn you.
@@ -193,7 +206,6 @@ store.set({ foo: 123 }) // 😭  TypeScript warning
 
 ### Stuff that probably needs work
 
-- [ ] I have yet to try how well Statery works with async updating of the store.
 - [ ] Statery _may_ have issues in React's Concurrent Mode. I haven't tried yet, but I will. (It does work fine within React's StrictMode, though, so chances are it'll be okay.)
 - [ ] No support for middleware yet. Haven't decided on an API that is adequately simple.
 - [ ] Probably other bits and pieces I haven't even encountered yet.
