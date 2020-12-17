@@ -136,16 +136,15 @@ console.log(store.state.count)
 
 ### Subscribing to updates imperatively
 
-Use a store's `subscribe` function to register a callback that will be executed every time a specific property is changed. Listeners will be passed both the new as well as the previous value as arguments.
+Use a store's `subscribe` function to register a callback that will be executed every time the store is changed. For every property that has been updated, the listener will be invoked once, with the name, new value and previous value of the changed property passed as its arguments.
 
 ```ts
 const store = makeStore({ count: 0 })
-store.subscribe("count", console.log)
+store.subscribe(console.log)
 
-/* Now every time an update is made to the the store's "count" property,
-   it will be logged to the console. */
+/* Now every time an update is made to the the store, it will be logged to the console. */
 
-store.unsubscribe("count", console.log)
+store.unsubscribe(console.log)
 ```
 
 ## NOTES

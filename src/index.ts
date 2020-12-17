@@ -13,10 +13,16 @@ import { useEffect, useRef, useState } from "react"
                                                              
 */
 
-export type State = { [key: string]: any }
+/**
+ * The state objects wrapped by Statery stores are any JavaScript objects that
+ * can be indexed using strings and/or numbers.
+ */
+export type State = Record<string | number, any>
 
-export type StateUpdateFunction<T extends State> = (state: T) => Partial<T>
-
+/**
+ * Statery stores wrap around a State object and provide a few functions to update them
+ * and, in turn, subscribe to updates.
+ */
 export type Store<T extends State> = {
   /**
    * Updates the store. Accepts an object that will be (shallow-)merged into the store's state,
@@ -28,18 +34,18 @@ export type Store<T extends State> = {
   set: (updates: Partial<T> | StateUpdateFunction<T>) => void
 
   /**
-   * Subscribe to changes of a specific property of the state. The provided listener callback will
-   * be invoked every time the property changes, and is passed the property's new and previous values
-   * as its arguments.
+   * Subscribe to changes to the store's state. Every time the store is updated, the provided
+   * listener callback will be invoked for every updated property, passing its name, new value and
+   * previous value as its arguments.
    *
    * @see Listener
    */
-  subscribe: (listener: Listener<any>) => void
+  subscribe: (listener: Listener) => void
 
   /**
-   * Unsubscribe a listener from being invoked when the specified property changes.
+   * Unsubscribe a listener from being invoked when the the store changes.
    */
-  unsubscribe: (listener: Listener<any>) => void
+  unsubscribe: (listener: Listener) => void
 
   /**
    * The state itself.
@@ -47,11 +53,15 @@ export type Store<T extends State> = {
   state: T
 }
 
+export type StateUpdateFunction<T extends State> = (state: T) => Partial<T>
+
 /**
  * A callback that can be passed to a store's `subscribe` and `unsubscribe` functions.
- * Receives the changed property's new and previous value as its arguments.
+ * When a store is modified, this will be invoked for every updated property.
+ * The name of the updated property as well as its new and previous value are passed
+ * as arguments.
  */
-export type Listener<T = any> = (prop: string, newValue: T, prevValue: T) => void
+export type Listener<T = any> = (prop: string | number, newValue: T, prevValue: T) => void
 
 /*
 
@@ -133,7 +143,7 @@ export const useStore = <T extends State>(store: Store<T>): T => {
 
   /* Subscribe to changes in the store. */
   useEffect(() => {
-    const listener: Listener = (p) => {
+    const listener: Listener = (p: keyof T) => {
       /* If this is the prop we're interested in, bump our version. */
       if (interestingProps.has(p)) setVersion((v) => v + 1)
     }
