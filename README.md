@@ -1,4 +1,14 @@
-# STATERY
+```
+
+       _____ ______   ____  ______    ___  ____   __ __
+      / ___/|      | /    ||      |  /  _]|    \ |  |  |
+     (   \_ |      ||  o  ||      | /  [_ |  D  )|  |  |
+      \__  ||_|  |_||     ||_|  |_||    _]|    / |  ~  |
+      /  \ |  |  |  |  _  |  |  |  |   [_ |    \ |___, |
+      \    |  |  |  |  |  |  |  |  |     ||  .  \|     |
+it's   \___|  |__|  |__|__|  |__|  |_____||__|\_||____/  omg!
+
+```
 
 ![Status](https://img.shields.io/badge/status-experimental-orange)
 [![Version](https://img.shields.io/npm/v/statery)](https://www.npmjs.com/package/statery)
