@@ -37,6 +37,10 @@ describe("useStore", () => {
       return wood >= 5 && gold >= 5
     }
 
+    // const canBuildHouse = (state: typeof store.state) => {
+    //   return state.wood >= 5 && state.gold >= 5
+    // }
+
     const buildHouse = () =>
       store.set((state) =>
         canBuildHouse(state)
