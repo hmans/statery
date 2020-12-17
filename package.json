@@ -24,7 +24,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "dev": "yarn clean && rollup -c -w",
-    "build": "yarn clean && rollup -c && tree dist",
+    "build": "yarn clean && rollup -c",
     "test": "jest"
   },
   "devDependencies": {
