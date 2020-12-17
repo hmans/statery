@@ -32,17 +32,17 @@ describe("makeStore", () => {
       let fooChanges = 0
       let barChanges = 0
 
-      const fooListener = () => fooChanges++
-      const barListener = () => barChanges++
+      const fooListener = (prop) => prop == "foo" && fooChanges++
+      const barListener = (prop) => prop == "bar" && barChanges++
 
-      store.subscribe("foo", fooListener)
-      store.subscribe("bar", barListener)
+      store.subscribe(fooListener)
+      store.subscribe(barListener)
 
       store.set(({ foo }) => ({ foo: foo + 1 }))
       store.set(({ foo, bar }) => ({ foo: foo + 1, bar: bar + 1 }))
 
-      store.unsubscribe("foo", fooListener)
-      store.unsubscribe("bar", barListener)
+      store.unsubscribe(fooListener)
+      store.unsubscribe(barListener)
 
       expect(fooChanges).toEqual(2)
       expect(barChanges).toEqual(1)
@@ -51,17 +51,20 @@ describe("makeStore", () => {
     it("feeds the changed values to the listener callback", () => {
       let newFoo: number
       let prevFoo: number
+      let changedProp: string
 
-      const listener: Listener<number> = (newValue, prevValue) => {
+      const listener: Listener<number> = (prop, newValue, prevValue) => {
+        changedProp = prop
         newFoo = newValue
         prevFoo = prevValue
       }
 
       store.set({ foo: 0 })
-      store.subscribe("foo", listener)
+      store.subscribe(listener)
       store.set({ foo: 1 })
-      store.unsubscribe("foo", listener)
+      store.unsubscribe(listener)
 
+      expect(changedProp).toBe("foo")
       expect(newFoo).toBe(1)
       expect(prevFoo).toBe(0)
     })
