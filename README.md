@@ -153,6 +153,7 @@ store.unsubscribe("count", console.log)
 ### Stuff that probably needs work
 
 - [ ] Statery _probably_ has problems in React's Concurrent Mode. I haven't tried yet, but I will.
+- [ ] Support for middleware. Haven't decided on an API that is adequately simple.
 - [ ] Probably other bits and pieces I haven't even encountered yet.
 
 ### Motivation & Assumptions
