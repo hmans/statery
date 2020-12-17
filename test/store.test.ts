@@ -34,7 +34,18 @@ describe("makeStore", () => {
       expect(result).toEqual({ foo: 1, bar: 0 })
     })
 
-    it("supports async updates to the state", () => {})
+    it("supports async updates to the state", async () => {
+      const doImportantWork = () => new Promise((resolve) => setTimeout(resolve, 2000))
+
+      const asyncUpdater = async () => {
+        await doImportantWork()
+        store.set({ foo: 1 })
+      }
+
+      expect(store.state.foo).toBe(0)
+      await asyncUpdater()
+      expect(store.state.foo).toBe(1)
+    })
   })
 
   describe(".subscribe", () => {
