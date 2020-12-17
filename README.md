@@ -9,7 +9,7 @@
 
 ### Features 🎉
 
-- Simple, **noise- and surprise-free API**. Check out the [demo](https://codesandbox.io/s/statery-clicker-game-hjxk3?file=/src/App.tsx)!
+- Simple, **noise- and surprise-free API**. Check out the [demo]!
 - **Extremely compact**, both in bundle size as well as API surface (2 exported functions!)
 - Fully **tested**, fully **typed**!
 - **Designed for React** (with functional components and hooks), but can also be used **without it**.
@@ -17,9 +17,9 @@
 ### Non-Features 🧤
 
 - Doesn't use **React Context** (but you can easily use it to provide a context-specific store!)
-- Provides a simple `set` function for updating a store and not much else. If you want to use **reducers** or libraries like [Immer](https://github.com/immerjs/immer), these can easily sit on top of your Statery store.
+- Provides a simple `set` function for updating a store and not much else (have you checked out the [demo] yet?) If you want to use **reducers** or libraries like [Immer], these can easily sit on top of your Statery store.
 - Currently no support for (or concept of) **middlewares**, but this may change in the future.
-- While the `useStore` hook makes use of **proxies**, the store contents themselves are never wrapped in proxy objects. (If you're looking for a fully proxy-based solution, I recommend [Valtio](https://github.com/pmndrs/valtio).)
+- While the `useStore` hook makes use of **proxies**, the store contents themselves are never wrapped in proxy objects. (If you're looking for a fully proxy-based solution, I recommend [Valtio].)
 - **React Class Components** are not supported (but PRs welcome!)
 
 ## BASIC USAGE
@@ -187,4 +187,9 @@ store.set({ foo: 123 }) // 😭  TypeScript warnin
 
 ### Prior Art & Credits
 
-Statery was born after spending a lot of time with the excellent state management libraries provided by the [Poimandres](https://github.com/pmndrs) collective, [Zustand](https://github.com/pmndrs/zustand) and [Valtio](https://github.com/pmndrs/valtio). Statery started out as an almost-clone of Zustand, but with the aim of providing an even simpler API. The `useStore` hook API was inspired by Valtio's very nice `useProxy`.
+Statery was born after spending a lot of time with the excellent state management libraries provided by the [Poimandres](https://github.com/pmndrs) collective, [Zustand] and [Valtio]. Statery started out as an almost-clone of Zustand, but with the aim of providing an even simpler API. The `useStore` hook API was inspired by Valtio's very nice `useProxy`.
+
+[demo]: https://codesandbox.io/s/statery-clicker-game-hjxk3?file=/src/App.tsx
+[zustand]: https://github.com/pmndrs/zustand
+[valtio]: https://github.com/pmndrs/valtio
+[immer]: https://github.com/immerjs/immer
