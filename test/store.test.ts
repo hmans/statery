@@ -33,6 +33,8 @@ describe("makeStore", () => {
       const result = store.set({ foo: 1 })
       expect(result).toEqual({ foo: 1, bar: 0 })
     })
+
+    it("supports async updates to the state", () => {})
   })
 
   describe(".subscribe", () => {

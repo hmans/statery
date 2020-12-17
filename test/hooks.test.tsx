@@ -1,4 +1,5 @@
 import { fireEvent, render } from "@testing-library/react"
+import { StrictMode } from "react"
 import { makeStore, useStore } from "../src"
 
 describe("useStore", () => {
@@ -10,7 +11,11 @@ describe("useStore", () => {
       return <p>Counter: {counter}</p>
     }
 
-    const { findByText } = render(<Counter />)
+    const { findByText } = render(
+      <StrictMode>
+        <Counter />
+      </StrictMode>
+    )
 
     await findByText("Counter: 123")
   })
@@ -91,12 +96,12 @@ describe("useStore", () => {
     }
 
     const { getByText, findByText } = render(
-      <>
+      <StrictMode>
         <Wood />
         <Gold />
         <Houses />
         <Buttons />
-      </>
+      </StrictMode>
     )
 
     await findByText("Wood: 0")
@@ -124,8 +129,11 @@ describe("useStore", () => {
     await findByText("Gold: 0")
     await findByText("Houses: 1")
 
-    expect(woodRenderCount).toEqual(9)
-    expect(housesRenderCount).toEqual(2)
-    expect(buttonsRenderCount).toEqual(9)
+    /* Check how often each component was rendered. Since we're using React's
+       StrictMode, we need to double these numbers because StrictMode intentionally
+       renders everything twice. */
+    expect(woodRenderCount).toEqual(9 * 2)
+    expect(housesRenderCount).toEqual(2 * 2)
+    expect(buttonsRenderCount).toEqual(9 * 2)
   })
 })
