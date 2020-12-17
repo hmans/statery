@@ -128,14 +128,14 @@ export const useStore = <T extends State>(store: Store<T>): T => {
   /* A cheap version state that we will bump in order to re-render the component. */
   const [, setVersion] = useState(0)
 
-  const interestingPropsRef = useRef(new Array<keyof T>())
-  const interestingProps = interestingPropsRef.current
+  /* A set containing all props that we're interested in. */
+  const interestingProps = useRef(new Set<keyof T>()).current
 
   /* Subscribe to changes in the store. */
   useEffect(() => {
     const listener: Listener = (p) => {
       /* If this is the prop we're interested in, bump our version. */
-      if (interestingProps.includes(p)) setVersion((v) => v + 1)
+      if (interestingProps.has(p)) setVersion((v) => v + 1)
     }
 
     store.subscribe(listener)
@@ -145,11 +145,9 @@ export const useStore = <T extends State>(store: Store<T>): T => {
   return new Proxy<Record<any, any>>(
     {},
     {
-      get: (cache, prop: keyof T) => {
+      get: (_, prop: keyof T) => {
         /* Add the prop we're interested in to the list of props */
-        if (!interestingProps.includes(prop)) {
-          interestingProps.push(prop)
-        }
+        interestingProps.add(prop)
 
         /* Return the value of the property. */
         return store.state[prop]
