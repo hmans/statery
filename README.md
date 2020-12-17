@@ -202,6 +202,8 @@ store.set({ foo: 123 }) // 😭  TypeScript warning
 
 Statery was born after spending a lot of time with the excellent state management libraries provided by the [Poimandres](https://github.com/pmndrs) collective, [Zustand] and [Valtio]. Statery started out as an almost-clone of Zustand, but with the aim of providing an even simpler API. The `useStore` hook API was inspired by Valtio's very nice `useProxy`.
 
+Statery is written and maintained by Hendrik Mans. [Get in touch on Twitter](https://twitter.com/hmans)!
+
 [demo]: https://codesandbox.io/s/statery-clicker-game-hjxk3?file=/src/App.tsx
 [zustand]: https://github.com/pmndrs/zustand
 [valtio]: https://github.com/pmndrs/valtio
