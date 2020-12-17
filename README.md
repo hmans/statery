@@ -32,6 +32,35 @@
 - While the `useStore` hook makes use of **proxies**, the store contents themselves are never wrapped in proxy objects. (If you're looking for a fully proxy-based solution, I recommend [Valtio].)
 - **React Class Components** are not supported (but PRs welcome!)
 
+## SUMMARY
+
+```ts
+import * as React from "react"
+import { makeStore, useStore } from "statery"
+
+/* Make a store */
+const store = makeStore({ counter: 0 })
+
+/* Write some code that updates it */
+const increment = () =>
+  store.set((state) => ({
+    counter: state.counter + 1
+  }))
+
+const Counter = () => {
+  /* Fetch data from the store (and automatically re-render
+     when it changes!) */
+  const { counter } = useStore(store)
+
+  return (
+    <div>
+      <p>Counter: {counter}</p>
+      <button onClick={increment}>Increment</button>
+    </div>
+  )
+}
+```
+
 ## BASIC USAGE
 
 ### Adding it to your Project
