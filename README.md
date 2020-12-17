@@ -114,7 +114,7 @@ const Buttons = () => {
 }
 ```
 
-Updates will be shallow-merged with the current state, meaning that properties you don't update will not be touched.
+Updates will be shallow-merged with the current state, meaning that top-level properties will be replaced, and properties you don't update will not be touched.
 
 ### Reading from a Store (with React)
 
@@ -130,7 +130,7 @@ const Wood = () => {
 }
 ```
 
-Naturally, your components will **re-render automatically** when the data they've accessed changes.
+When any of the data your components access changes in the store, they will automatically re-render.
 
 ### Reading from a Store (without React)
 
