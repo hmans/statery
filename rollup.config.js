@@ -1,7 +1,9 @@
+import { sizeSnapshot } from "rollup-plugin-size-snapshot"
 import typescript from "rollup-plugin-typescript2"
 import pkg from "./package.json"
 
 const plugins = [
+  sizeSnapshot(),
   typescript({
     typescript: require("typescript")
   })
