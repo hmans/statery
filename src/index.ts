@@ -36,6 +36,12 @@ export type Store<T extends State> = {
    *
    * Returns the updated version of the store.
    *
+   * @example
+   * store.set({ foo: 1 })
+   *
+   * @example
+   * store.set(state => ({ foo: state.foo + 1}))
+   *
    * @see StateUpdateFunction
    */
   set: (updates: Partial<T> | StateUpdateFunction<T>) => T
@@ -76,9 +82,7 @@ export type Listener<T extends State> = (updates: Partial<T>, state: T) => void
 */
 
 /**
- * Creates a Statery store that wraps around a state object.
- *
- * Keep in mind that the state object will be mutated by the store.
+ * Creates a Statery store and populates it with an initial state.
  *
  * @param state The state object that will be wrapped by the store.
  */
@@ -96,9 +100,7 @@ export const makeStore = <T extends State>(initialState: T): Store<T> => {
       updates = updates instanceof Function ? updates(state) : updates
 
       /* Execute listeners */
-      if (listeners.length > 0) {
-        for (const listener of listeners) listener(updates, state)
-      }
+      for (const listener of listeners) listener(updates, state)
 
       /* Apply updates */
       state = { ...state, ...updates }
@@ -132,7 +134,7 @@ export const makeStore = <T extends State>(initialState: T): Store<T> => {
 /**
  * Provides reactive read access to a Statery store. Returns a proxy object that
  * provides direct access to the store's state and makes sure that the React component
- * it was invoked from automaticaly re-renders when any of the data it uses has changed.
+ * it was invoked from automaticaly re-renders when any of the data it uses is updated.
  *
  * @param store The Statery store to access.
  */
