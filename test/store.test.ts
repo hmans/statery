@@ -1,4 +1,4 @@
-import { Listener, makeStore } from "../src"
+import { makeStore } from "../src"
 
 describe("makeStore", () => {
   const store = makeStore({
