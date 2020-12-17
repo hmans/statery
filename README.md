@@ -16,10 +16,11 @@
 
 ### Non-Features 🧤
 
+- Doesn't use **React Context** (but you can easily use it to provide a context-specific store!)
 - Provides a simple `set` function for updating a store and not much else. If you want to use **reducers** or libraries like [Immer](https://github.com/immerjs/immer), these can easily sit on top of your Statery store.
 - Currently no support for (or concept of) **middlewares**, but this may change in the future.
-- While the `useStore` hook makes use of proxies, the store contents themselves are never wrapped in proxy objects. (If you're looking for a fully proxy-based solution, I recommend [Valtio](https://github.com/pmndrs/valtio).)
-- React Class Components are not supported (but PRs welcome!)
+- While the `useStore` hook makes use of **proxies**, the store contents themselves are never wrapped in proxy objects. (If you're looking for a fully proxy-based solution, I recommend [Valtio](https://github.com/pmndrs/valtio).)
+- **React Class Components** are not supported (but PRs welcome!)
 
 ## BASIC USAGE
 
