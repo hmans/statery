@@ -83,29 +83,31 @@ export type Listener<T extends State> = (updates: Partial<T>, state: T) => void
 export const makeStore = <T extends State>(state: T): Store<T> => {
   let listeners = new Array<Listener<T>>()
 
-  const set = (updates: Partial<T> | StateUpdateFunction<T>) => {
-    /* Update state */
-    const newProps = updates instanceof Function ? updates(state) : updates
+  return {
+    state,
 
-    /* Execute listeners */
-    if (listeners.length > 0) {
-      const prevState = { ...state } // TODO: nope nope nope
-      for (const listener of listeners) listener(newProps, prevState)
+    set: (updates) => {
+      /* Get new properties */
+      const newProps = updates instanceof Function ? updates(state) : updates
+
+      /* Execute listeners */
+      if (listeners.length > 0) {
+        const prevState = { ...state } // TODO: nope nope nope
+        for (const listener of listeners) listener(newProps, prevState)
+      }
+
+      /* Apply updates */
+      Object.assign(state, newProps)
+    },
+
+    subscribe: (listener) => {
+      listeners.push(listener)
+    },
+
+    unsubscribe: (listener) => {
+      listeners = listeners.filter((l) => l !== listener)
     }
-
-    /* Apply updates */
-    Object.assign(state, newProps)
   }
-
-  const subscribe = (listener: Listener<any>) => {
-    listeners.push(listener)
-  }
-
-  const unsubscribe = (listener: Listener<any>) => {
-    listeners = listeners.filter((l) => l !== listener)
-  }
-
-  return { set, subscribe, unsubscribe, state }
 }
 
 /*
