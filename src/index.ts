@@ -143,14 +143,14 @@ export const useStore = <T extends State>(store: Store<T>): T => {
   const [, setVersion] = useState(0)
 
   /* A set containing all props that we're interested in. */
-  const interestingProps = useRef(new Set<keyof T>()).current
+  const subscribedProps = useRef(new Set<keyof T>()).current
 
   /* Subscribe to changes in the store. */
   useEffect(() => {
     const listener: Listener<T> = (updates: Partial<T>) => {
       /* If there is at least one prop being updated that we're interested in,
          bump our local version. */
-      if (Object.keys(updates).find((prop) => interestingProps.has(prop))) {
+      if (Object.keys(updates).find((prop) => subscribedProps.has(prop))) {
         setVersion((v) => v + 1)
       }
     }
@@ -165,7 +165,7 @@ export const useStore = <T extends State>(store: Store<T>): T => {
     {
       get: (_, prop: keyof T) => {
         /* Add the prop we're interested in to the list of props */
-        interestingProps.add(prop)
+        subscribedProps.add(prop)
 
         /* Return the value of the property. */
         return store.state[prop]
