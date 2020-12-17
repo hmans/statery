@@ -91,15 +91,15 @@ export const makeStore = <T extends State>(initialState: T): Store<T> => {
 
     set: (updates) => {
       /* Get new properties */
-      const newProps = updates instanceof Function ? updates(state) : updates
+      updates = updates instanceof Function ? updates(state) : updates
 
       /* Execute listeners */
       if (listeners.length > 0) {
-        for (const listener of listeners) listener(newProps, state)
+        for (const listener of listeners) listener(updates, state)
       }
 
       /* Apply updates */
-      state = { ...state, ...newProps }
+      state = { ...state, ...updates }
     },
 
     subscribe: (listener) => {
