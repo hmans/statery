@@ -46,6 +46,18 @@ describe("makeStore", () => {
       await asyncUpdater()
       expect(store.state.foo).toBe(1)
     })
+
+    it("if no new values are applied, the state stays untouched", () => {
+      const oldState = store.state
+      store.set({ foo: 0 })
+      expect(store.state).toBe(oldState)
+    })
+
+    it("if something actually changes, the state become a new object", () => {
+      const oldState = store.state
+      store.set({ foo: 1 })
+      expect(store.state).not.toBe(oldState)
+    })
   })
 
   describe(".subscribe", () => {

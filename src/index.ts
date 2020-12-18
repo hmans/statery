@@ -90,20 +90,28 @@ export const makeStore = <T extends State>(initialState: T): Store<T> => {
   let state = initialState
   const listeners = new Set<Listener<T>>()
 
+  const getActualChanges = (updates: Partial<T>) =>
+    Object.keys(updates).reduce<Partial<T>>((changes, prop: keyof Partial<T>) => {
+      if (updates[prop] !== state[prop]) changes[prop] = updates[prop]
+      return changes
+    }, {})
+
   return {
     get state() {
       return state
     },
 
-    set: (updates) => {
-      /* Get new properties */
-      updates = updates instanceof Function ? updates(state) : updates
+    set: (incoming) => {
+      /* If the argument is a function, run it */
+      const updates = getActualChanges(incoming instanceof Function ? incoming(state) : incoming)
 
-      /* Execute listeners */
-      for (const listener of listeners) listener(updates, state)
+      if (Object.keys(updates).length > 0) {
+        /* Execute listeners */
+        for (const listener of listeners) listener(updates, state)
 
-      /* Apply updates */
-      state = { ...state, ...updates }
+        /* Apply updates */
+        state = { ...state, ...updates }
+      }
 
       return state
     },

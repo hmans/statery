@@ -136,4 +136,46 @@ describe("useStore", () => {
     expect(housesRenderCount).toEqual(2 * 2)
     expect(buttonsRenderCount).toEqual(9 * 2)
   })
+
+  it("should not re-render a component when a watched prop was updated to the same value", async () => {
+    const store = makeStore({ counter: 0 })
+
+    let renders = 0
+
+    const increase = () =>
+      store.set(({ counter }) => ({
+        counter: counter + 1
+      }))
+
+    const setToSameValue = () =>
+      store.set(({ counter }) => ({
+        counter
+      }))
+
+    const Counter = () => {
+      renders++
+
+      const { counter } = useStore(store)
+
+      return (
+        <>
+          <p>Counter: {counter}</p>
+          <button onClick={increase}>Increase Counter</button>
+          <button onClick={setToSameValue}>Set to Same Value</button>
+        </>
+      )
+    }
+
+    const { getByText, findByText } = render(<Counter />)
+
+    expect(renders).toBe(1)
+    await findByText("Counter: 0")
+    fireEvent.click(getByText("Increase Counter"))
+
+    expect(renders).toBe(2)
+    await findByText("Counter: 1")
+    fireEvent.click(getByText("Set to Same Value"))
+
+    expect(renders).toBe(2)
+  })
 })
