@@ -88,7 +88,7 @@ export type Listener<T extends State> = (updates: Partial<T>, state: T) => void
  */
 export const makeStore = <T extends State>(initialState: T): Store<T> => {
   let state = initialState
-  let listeners = new Array<Listener<T>>()
+  const listeners = new Set<Listener<T>>()
 
   return {
     get state() {
@@ -109,11 +109,11 @@ export const makeStore = <T extends State>(initialState: T): Store<T> => {
     },
 
     subscribe: (listener) => {
-      listeners.push(listener)
+      listeners.add(listener)
     },
 
     unsubscribe: (listener) => {
-      listeners = listeners.filter((l) => l !== listener)
+      listeners.delete(listener)
     }
   }
 }
