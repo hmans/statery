@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### [0.5.0] - - 2020-12-18
+### [0.5.0] - 2020-12-18
 
 - **Minor Breaking Change:** The `set` function will now filter incoming updates and discard any that don't actually change the value that is currently in the store. Listeners will only receive the _actual_ changes to a store, and components will only re-render when a watched store property has actually changed to a new value. This change was made to allow for easier [integration with libraries like Immer](https://codesandbox.io/s/statery-immer-vr9b2?file=/src/App.tsx:592-783) that produce a complete new version of the store.
 
