@@ -3,7 +3,8 @@ import { makeStore } from "../src"
 describe("makeStore", () => {
   const store = makeStore({
     foo: 0,
-    bar: 0
+    bar: 0,
+    active: false
   })
 
   beforeEach(() => {
@@ -12,7 +13,7 @@ describe("makeStore", () => {
 
   describe(".state", () => {
     it("provides direct access to the state object", () => {
-      expect(store.state).toEqual({ foo: 0, bar: 0 })
+      expect(store.state).toEqual({ foo: 0, bar: 0, active: false })
     })
   })
 
@@ -31,7 +32,7 @@ describe("makeStore", () => {
 
     it("returns the updated state", () => {
       const result = store.set({ foo: 1 })
-      expect(result).toEqual({ foo: 1, bar: 0 })
+      expect(result).toEqual({ foo: 1, bar: 0, active: false })
     })
 
     it("supports async updates to the state", async () => {
@@ -63,7 +64,6 @@ describe("makeStore", () => {
   describe(".subscribe", () => {
     it("accepts a listener callback that will be invoked when the store changes", () => {
       const listener = jest.fn()
-      store.set({ foo: 0, bar: 0 })
       store.subscribe(listener)
       store.set({ foo: 1 })
       store.unsubscribe(listener)
@@ -75,7 +75,7 @@ describe("makeStore", () => {
       expect(listener.mock.calls[0][0]).toEqual({ foo: 1 })
 
       /* The second argument should be the previous state */
-      expect(listener.mock.calls[0][1]).toEqual({ foo: 0, bar: 0 })
+      expect(listener.mock.calls[0][1]).toEqual({ foo: 0, bar: 0, active: false })
     })
 
     it("allows subscribing to updates to a store", () => {
@@ -97,6 +97,16 @@ describe("makeStore", () => {
 
       expect(changeCounters.foo).toEqual(2)
       expect(changeCounters.bar).toEqual(1)
+    })
+
+    it("only receives actual changes made to the store", () => {
+      const listener = jest.fn()
+      store.subscribe(listener)
+
+      store.set({ foo: 1, bar: 0, active: true })
+      expect(listener.mock.calls[0][0]).toEqual({ foo: 1, active: true })
+
+      store.unsubscribe(listener)
     })
   })
 })
