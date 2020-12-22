@@ -13,7 +13,7 @@
     "state-management",
     "hooks"
   ],
-  "version": "0.5.1",
+  "version": "0.5.2",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
