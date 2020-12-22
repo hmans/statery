@@ -175,7 +175,7 @@ export const useStore = <T extends State>(store: Store<T>): T => {
         /* Add the prop we're interested in to the list of props */
         subscribedProps.add(prop)
 
-        /* Return the value of the property. */
+        /* Return the current value of the property. */
         return store.state[prop]
       }
     }
