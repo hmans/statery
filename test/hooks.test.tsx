@@ -178,4 +178,30 @@ describe("useStore", () => {
 
     expect(renders).toBe(2)
   })
+
+  it("works with boolean state properties", async () => {
+    const store = makeStore({ active: false })
+
+    const ActiveDisplay = () => {
+      const { active } = useStore(store)
+      return (
+        <>
+          <p>Active: {active ? "Yes" : "No"}</p>
+          <button onClick={() => store.set({ active: !active })}>Toggle</button>
+        </>
+      )
+    }
+
+    const page = render(
+      <StrictMode>
+        <ActiveDisplay />
+      </StrictMode>
+    )
+
+    await page.findByText("Active: No")
+    fireEvent.click(page.getByText("Toggle"))
+    await page.findByText("Active: Yes")
+    fireEvent.click(page.getByText("Toggle"))
+    await page.findByText("Active: No")
+  })
 })
