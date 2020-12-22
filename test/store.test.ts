@@ -104,7 +104,15 @@ describe("makeStore", () => {
       store.subscribe(listener)
 
       store.set({ foo: 1, bar: 0, active: true })
+
+      /* Updates only contain props that have actually changed */
       expect(listener.mock.calls[0][0]).toEqual({ foo: 1, active: true })
+
+      /* The second argument is the previous state */
+      expect(listener.mock.calls[0][1]).toEqual({ foo: 0, bar: 0, active: false })
+
+      /* The state has actually been updated */
+      expect(store.state).toEqual({ foo: 1, bar: 0, active: true })
 
       store.unsubscribe(listener)
     })
