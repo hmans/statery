@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- **Fixed:** When subscribers were invoked, the store's state had not yet been updated to reflect the incoming changes. This has now been fixed.
+
 ### [0.5.0 & 0.5.1] - 2020-12-18
 
 ### Changed

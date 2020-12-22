@@ -116,5 +116,22 @@ describe("makeStore", () => {
 
       store.unsubscribe(listener)
     })
+
+    it("already makes the updated state available to listeners", () => {
+      let newValue: number
+      let prevValue: number
+
+      const listener = (_, prevState) => {
+        newValue = store.state.foo
+        prevValue = prevState.foo
+      }
+
+      store.subscribe(listener)
+      store.set({ foo: 1 })
+      store.unsubscribe(listener)
+
+      expect(prevValue).toBe(0)
+      expect(newValue).toBe(1)
+    })
   })
 })

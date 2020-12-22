@@ -106,11 +106,14 @@ export const makeStore = <T extends State>(initialState: T): Store<T> => {
       const updates = getActualChanges(incoming instanceof Function ? incoming(state) : incoming)
 
       if (Object.keys(updates).length > 0) {
-        /* Execute listeners */
-        for (const listener of listeners) listener(updates, state)
+        /* Keep a reference to the previous state, we're going to need it in a second */
+        const previousState = state
 
         /* Apply updates */
         state = { ...state, ...updates }
+
+        /* Execute listeners */
+        for (const listener of listeners) listener(updates, previousState)
       }
 
       return state
