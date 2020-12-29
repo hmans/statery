@@ -13,6 +13,7 @@
     "state-management",
     "hooks"
   ],
+  "sideEffects": false,
   "version": "0.5.2",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
