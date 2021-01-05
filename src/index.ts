@@ -27,7 +27,7 @@ export type Store<T extends State = State> = {
   /**
    * Return the current state.
    */
-  state: T
+  state: Readonly<T>
 
   /**
    * Updates the store. Accepts an object that will be (shallow-)merged into the current state,
@@ -61,12 +61,12 @@ export type Store<T extends State = State> = {
   unsubscribe: (listener: Listener<T>) => void
 }
 
-export type StateUpdateFunction<T extends State> = (state: T) => Partial<T>
+export type StateUpdateFunction<T extends State> = (state: Readonly<T>) => Partial<T>
 
 /**
  * A callback that can be passed to a store's `subscribe` and `unsubscribe` functions.
  */
-export type Listener<T extends State> = (updates: Partial<T>, state: T) => void
+export type Listener<T extends State> = (updates: Readonly<Partial<T>>, state: Readonly<T>) => void
 
 /*
 
