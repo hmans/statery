@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - **Changed:** Slightly improved typings. Most importantly, `store.state` is now typed as readonly, which should make Typescript et al warn you if you're trying to directly mutate the state object.
+- **Changed:** Statery now uses Typescript 4.2.
 
 ## [0.5.2] - 2020-12-22
 
