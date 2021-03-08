@@ -174,7 +174,7 @@ export const useStore = <T extends State>(store: Store<T>): T => {
   return new Proxy<Record<any, any>>(
     {},
     {
-      get: (_, prop: keyof T) => {
+      get: (_, prop: string) => {
         /* Add the prop we're interested in to the list of props */
         subscribedProps.add(prop)
 
