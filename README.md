@@ -28,7 +28,6 @@
 
 - Doesn't use **React Context** (but you can easily use it to provide a context-specific store!)
 - Provides a simple `set` function for updating a store and not much else (have you checked out the [demo] yet?) If you want to use **reducers** or libraries like [Immer], these can easily sit on top of your Statery store.
-- Currently no support for (or concept of) **middlewares**, but this may change in the future.
 - While the `useStore` hook makes use of **proxies**, the store contents themselves are never wrapped in proxy objects. (If you're looking for a fully proxy-based solution, I recommend [Valtio].)
 - **React Class Components** are not supported (but PRs welcome!)
 
@@ -224,6 +223,28 @@ const fetchPosts = async () => {
 }
 ```
 
+### Middleware
+Plug in your middleware in a glimpse to react to the store changes.
+> The middleware can either be sync or asynchronous
+
+```ts
+import { makeStore, applyMiddleware } from "statery"
+
+// Create a store
+const store = makeStore({ counter: 0 })
+
+// Create a logger middleware
+const middleware = (state) => console.log(state)
+// Create another middleware
+const middleware2 = (state) => localStorage.setItem('STATERY', JSON.stringify(state))
+
+// Apply your middleware
+applyMiddleware(store, middleware, middleware2);
+
+// Update your store
+store.set({ counter: 1 })
+```
+
 ### TypeScript support
 
 Statery is written in TypeScript, and its stores are fully typed. `useStore` knows about the structure of your store, and if you're about to update a store with a property that it doesn't know about, TypeScript will warn you.
@@ -240,7 +261,7 @@ store.set({ foo: 123 }) // 😭  TypeScript warning
 
 ### Stuff that probably needs work
 
-- [ ] No support for middleware yet. Haven't decided on an API that is adequately simple.
+- [x] No support for middleware yet. Haven't decided on an API that is adequately simple.
 - [ ] I have yet to try how Statery behaves in React's upcoming Concurrent Mode. It does work fine within React's StrictMode, though, so chances are it'll be okay.
 - [ ] Probably other bits and pieces I haven't even encountered yet.
 
