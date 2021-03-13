@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import type { Promisable } from "type-fest"
 
 /*
 
@@ -67,6 +68,11 @@ export type StateUpdateFunction<T extends State> = (state: Readonly<T>) => Parti
  * A callback that can be passed to a store's `subscribe` and `unsubscribe` functions.
  */
 export type Listener<T extends State> = (updates: Readonly<Partial<T>>, state: Readonly<T>) => void
+
+/**
+ * A middleware that can be passed to `applyMiddleware` that will run on store changes.
+ */
+export type Middleware<T extends State> = (state: T) => Promisable<void>
 
 /*
 
@@ -183,4 +189,22 @@ export const useStore = <T extends State>(store: Store<T>): T => {
       }
     }
   )
+}
+
+/* Middleware */
+
+/**
+ * Apply a middleware that executes the given callback on store change
+ *
+ * @param store The store to apply the middleware to
+ * @param middleware The callback that will run on store changes, can be either sync or async
+ */
+export const applyMiddleware = <T extends State>(
+  store: Store<T>,
+  ...middleware: Middleware<T>[]
+) => {
+  store.subscribe(async () => {
+    /* Await all middleware, can be a sync callback */
+    await Promise.all(middleware.map((m) => m(store.state)))
+  })
 }

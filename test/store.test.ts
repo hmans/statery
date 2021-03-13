@@ -1,4 +1,4 @@
-import { makeStore } from "../src"
+import { makeStore, applyMiddleware } from "../src"
 
 describe("makeStore", () => {
   const store = makeStore({
@@ -8,7 +8,7 @@ describe("makeStore", () => {
   })
 
   beforeEach(() => {
-    store.set({ foo: 0, bar: 0 })
+    store.set({ foo: 0, bar: 0, active: false })
   })
 
   describe(".state", () => {
@@ -132,6 +132,47 @@ describe("makeStore", () => {
 
       expect(prevValue).toBe(0)
       expect(newValue).toBe(1)
+    })
+
+    it("should call sync middleware", () => {
+      const middleware = jest.fn()
+
+      applyMiddleware(store, middleware)
+      store.set({ foo: 1 })
+
+      expect(middleware).toHaveBeenCalledWith({
+        foo: 1,
+        bar: 0,
+        active: false
+      })
+    })
+
+    it("should call async middleware", () => {
+      const middleware = jest.fn().mockImplementation(() => Promise.resolve())
+
+      applyMiddleware(store, middleware)
+      store.set({ foo: 1 })
+
+      expect(middleware).toHaveBeenCalledWith({
+        foo: 1,
+        bar: 0,
+        active: false
+      })
+    })
+
+    it("should call all middleware", () => {
+      const middlewares = [jest.fn(), jest.fn().mockImplementation(() => Promise.resolve())]
+
+      applyMiddleware.apply(null, [store, ...middlewares])
+      store.set({ foo: 1 })
+
+      middlewares.forEach((m) => {
+        expect(m).toHaveBeenCalledWith({
+          foo: 1,
+          bar: 0,
+          active: false
+        })
+      })
     })
   })
 })
