@@ -14,7 +14,7 @@
     "hooks"
   ],
   "sideEffects": false,
-  "version": "0.5.4",
+  "version": "0.6.0-0",
   "src": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
