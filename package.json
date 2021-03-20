@@ -17,12 +17,12 @@
   "version": "0.5.4",
   "src": "src/index.ts",
   "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "module": "dist/index.modern.js",
   "unpkg": "dist/index.umd.js",
   "exports": {
-    ".": "./dist/index.esm.js",
-    "./react": "./dist/react.esm.js",
-    "./preact": "./dist/preact.esm.js"
+    ".": "./dist/index.modern.js",
+    "./react": "./dist/react.modern.js",
+    "./preact": "./dist/preact.modern.js"
   },
   "types": "dist/index.d.ts",
   "files": [
