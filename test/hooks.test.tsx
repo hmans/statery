@@ -1,4 +1,5 @@
 import { fireEvent, render } from "@testing-library/react"
+import * as React from "react"
 import { StrictMode } from "react"
 import { makeStore, useStore } from "../src"
 

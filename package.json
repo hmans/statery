@@ -30,7 +30,8 @@
     "dev": "microbundle watch",
     "build": "microbundle",
     "test": "jest",
-    "docs": "typedoc src/index.ts"
+    "docs": "typedoc src/index.ts",
+    "prepublishOnly": "yarn test && yarn build"
   },
   "devDependencies": {
     "@testing-library/react": "^11.2.2",
