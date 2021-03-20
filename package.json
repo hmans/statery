@@ -24,6 +24,16 @@
     "./react": "./dist/react.modern.js",
     "./preact": "./dist/preact.modern.js"
   },
+  "typesVersions": {
+    "*": {
+      "react": [
+        "dist/react"
+      ],
+      "preact": [
+        "dist/preact"
+      ]
+    }
+  },
   "types": "dist/index.d.ts",
   "files": [
     "**"
