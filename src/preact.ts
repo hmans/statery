@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "preact/hooks"
 import { State, Store, Listener } from "."
 
 /**

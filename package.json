@@ -18,10 +18,11 @@
   "src": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
-  "unpkg": "dist/foo.umd.js",
+  "unpkg": "dist/index.umd.js",
   "exports": {
     ".": "./dist/index.esm.js",
-    "./react": "./dist/react.esm.js"
+    "./react": "./dist/react.esm.js",
+    "./preact": "./dist/preact.esm.js"
   },
   "types": "dist/index.d.ts",
   "files": [
@@ -43,6 +44,7 @@
     "@types/react-dom": "^17.0.0",
     "jest": "^26.6.3",
     "microbundle": "^0.13.0",
+    "preact": "^10.5.13",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "rimraf": "^3.0.2",
