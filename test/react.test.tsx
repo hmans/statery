@@ -1,7 +1,8 @@
 import { fireEvent, render } from "@testing-library/react"
 import * as React from "react"
 import { StrictMode } from "react"
-import { makeStore, useStore } from "../src"
+import { makeStore } from "../src"
+import { useStore } from "../src/react"
 
 describe("useStore", () => {
   it("fetches a piece of data from the store", async () => {
