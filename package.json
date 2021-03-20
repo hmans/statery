@@ -31,8 +31,8 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "dev": "microbundle watch src/*.ts --external react",
-    "build": "microbundle build src/*.ts --external react",
+    "dev": "microbundle watch src/*.ts --external react,preact",
+    "build": "microbundle build src/*.ts --external react,preact",
     "test": "jest",
     "docs": "typedoc src/index.ts",
     "prepublishOnly": "yarn test && yarn build"
