@@ -88,6 +88,10 @@ export const makeStore = <T extends State>(initialState: T): Store<T> => {
   let state = initialState
   const listeners = new Set<Listener<T>>()
 
+  /**
+   * Reduces a set of incoming changes to those that actually _are_ changes from the
+   * current state.
+   */
   const getActualChanges = (updates: Partial<T>) =>
     Object.keys(updates).reduce<Partial<T>>((changes, prop: keyof Partial<T>) => {
       if (updates[prop] !== state[prop]) changes[prop] = updates[prop]
