@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 
 /*
 
@@ -157,7 +157,7 @@ export const useStore = <T extends State>(store: Store<T>): T => {
   const subscribedProps = useConst(() => new Set<keyof T>())
 
   /* Subscribe to changes in the store. */
-  useEffect(() => {
+  useLayoutEffect(() => {
     const listener: Listener<T> = (updates: Partial<T>) => {
       /* If there is at least one prop being updated that we're interested in,
          bump our local version. */
