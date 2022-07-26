@@ -14,10 +14,9 @@ import { useLayoutEffect, useRef, useState } from "react"
 */
 
 /**
- * The state objects managed by Statery stores are any JavaScript objects that
- * can be indexed using strings and/or numbers.
+ * The state objects managed by Statery stores are any string-indexed JavaScript objects.
  */
-export type State = Record<string | number, any>
+export type State = Record<string, any>
 
 /**
  * Statery stores wrap around a State object and provide a few functions to update them
@@ -84,7 +83,7 @@ export type Listener<T extends State> = (updates: Readonly<Partial<T>>, state: R
 /**
  * Creates a Statery store and populates it with an initial state.
  *
- * @param state The state object that will be wrapped by the store.
+ * @param initialState The state object that will be wrapped by the store.
  */
 export const makeStore = <T extends State>(initialState: T): Store<T> => {
   let state = initialState
@@ -105,6 +104,7 @@ export const makeStore = <T extends State>(initialState: T): Store<T> => {
       /* If the argument is a function, run it */
       const updates = getActualChanges(incoming instanceof Function ? incoming(state) : incoming)
 
+      /* Has anything changed? */
       if (Object.keys(updates).length > 0) {
         /* Keep a reference to the previous state, we're going to need it in a second */
         const previousState = state
