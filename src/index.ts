@@ -154,7 +154,7 @@ export const useStore = <T extends State>(store: Store<T>): T => {
   const [, setVersion] = useState(0)
 
   /* A set containing all props that we're interested in. */
-  const subscribedProps = useRef(new Set<keyof T>()).current
+  const subscribedProps = useConst(() => new Set<keyof T>())
 
   /* Subscribe to changes in the store. */
   useEffect(() => {
@@ -183,4 +183,14 @@ export const useStore = <T extends State>(store: Store<T>): T => {
       }
     }
   )
+}
+
+/**
+ * A tiny helper hook that will initialize a ref with the return value of the
+ * given constructor function.
+ */
+const useConst = <T>(ctor: () => T) => {
+  const ref = useRef<T>(null!)
+  if (!ref.current) ref.current = ctor()
+  return ref.current
 }
