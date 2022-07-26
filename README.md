@@ -240,8 +240,6 @@ store.set({ foo: 123 }) // 😭  TypeScript warning
 ### Stuff that probably needs work
 
 - [ ] No support for middleware yet. Haven't decided on an API that is adequately simple.
-- [ ] I have yet to try how Statery behaves in React's upcoming Concurrent Mode. It does work fine within React's StrictMode, though, so chances are it'll be okay.
-- [ ] Probably other bits and pieces I haven't even encountered yet.
 
 ### Prior Art & Credits
 
