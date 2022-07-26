@@ -117,6 +117,25 @@ describe("makeStore", () => {
       store.unsubscribe(listener)
     })
 
+    it("receives all changes made to the store if the `force` flag is set", () => {
+      const listener = jest.fn()
+      store.subscribe(listener)
+
+      /* We're setting both foo and bar; only foo is actually a new value. */
+      store.set({ foo: 1, bar: 0 }, true)
+
+      /* Updates only contain props that have actually changed */
+      expect(listener.mock.calls[0][0]).toEqual({ foo: 1, bar: 0 })
+
+      /* The second argument is the previous state */
+      expect(listener.mock.calls[0][1]).toEqual({ foo: 0, bar: 0 })
+
+      /* The state has actually been updated */
+      expect(store.state).toEqual({ foo: 1, bar: 0 })
+
+      store.unsubscribe(listener)
+    })
+
     it("already makes the updated state available to listeners", () => {
       let newValue: number | undefined = undefined
       let prevValue: number | undefined = undefined
