@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0-next.0
+
+### Minor Changes
+
+- d2eb9b4: **Fixed:** `useStore` now hooks into the store using `useLayoutEffect`, not `useEffect`
+- 53fff47: Refreshed all of the package's dependencies and brushed up its test setup.
+- 53fff47: Statery now requires React 18 and up!
+
 ## [0.5.4] - 2021-03-20
 
 - **Changed:** Slightly improved typings. Most importantly, `store.state` is now typed as readonly, which should make Typescript et al warn you if you're trying to directly mutate the state object.

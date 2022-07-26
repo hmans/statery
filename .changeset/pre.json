@@ -4,5 +4,9 @@
   "initialVersions": {
     "statery": "0.5.4"
   },
-  "changesets": []
+  "changesets": [
+    "beige-emus-trade",
+    "lazy-buckets-accept",
+    "orange-pillows-smash"
+  ]
 }
