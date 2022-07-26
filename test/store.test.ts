@@ -118,8 +118,8 @@ describe("makeStore", () => {
     })
 
     it("already makes the updated state available to listeners", () => {
-      let newValue: number
-      let prevValue: number
+      let newValue: number | undefined = undefined
+      let prevValue: number | undefined = undefined
 
       const listener = (_, prevState) => {
         newValue = store.state.foo
