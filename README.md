@@ -197,7 +197,9 @@ const BuyHouseButton = () => {
 
 ### Forcing a store update
 
-Statery checks changes to the store's state by checking referential equality. In some cases, you may want to force a store update even though the property has not changed to a new object. For these situations, the `set` function allows you to pass a second argument; if this is set to `true`, Statery will ignore the equality check and notify all listeners to the properties included in the update.
+When the store is updated, Statery will check which of the properties within the update object are actually different objects (or scalar values) from the previous state, and will only notify listeners to those properties.
+
+In some cases, you may want to force a store update even though the property has not changed to a new object. For these situations, the `set` function allows you to pass a second argument; if this is set to `true`, Statery will ignore the equality check and notify all listeners to the properties included in the update.
 
 Example:
 
