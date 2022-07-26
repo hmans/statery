@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0-next.1
+
+### Minor Changes
+
+- 75d0a40: Simplify types.
+- da27eba: `set` now takes a second argument `forceNotify`; when set to true, all updated properties will be notified, regardless of referential equality to the previous value.
+
 ## 0.6.0-next.0
 
 ### Minor Changes
