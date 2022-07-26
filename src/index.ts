@@ -43,7 +43,7 @@ export type Store<T extends State = State> = {
    *
    * @see StateUpdateFunction
    */
-  set: (updates: Partial<T> | StateUpdateFunction<T>) => T
+  set: (updates: Partial<T> | StateUpdateFunction<T>, forceNotify?: boolean) => T
 
   /**
    * Subscribe to changes to the store's state. Every time the store is updated, the provided
@@ -100,9 +100,17 @@ export const makeStore = <T extends State>(initialState: T): Store<T> => {
       return state
     },
 
-    set: (incoming) => {
+    set: (incoming, forceNotify = false) => {
       /* If the argument is a function, run it */
-      const updates = getActualChanges(incoming instanceof Function ? incoming(state) : incoming)
+      const incomingState = incoming instanceof Function ? incoming(state) : incoming
+
+      /*
+      Check which updates we're actually applying. If forceNotify is enabled,
+      we'll use (and notify for) all of them; otherwise, we'll check them against
+      the current state to only change (and notify for) the properties
+      that have changed from the current state.
+      */
+      const updates = forceNotify ? incomingState : getActualChanges(incomingState)
 
       /* Has anything changed? */
       if (Object.keys(updates).length > 0) {

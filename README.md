@@ -195,6 +195,28 @@ const BuyHouseButton = () => {
 }
 ```
 
+### Forcing a store update
+
+When the store is updated, Statery will check which of the properties within the update object are actually different objects (or scalar values) from the previous state, and will only notify listeners to those properties.
+
+In some cases, you may want to force a store update even though the property has not changed to a new object. For these situations, the `set` function allows you to pass a second argument; if this is set to `true`, Statery will ignore the equality check and notify all listeners to the properties included in the update.
+
+Example:
+
+```tsx
+const store = makeStore({
+  rotation: new THREE.Vector3()
+})
+
+export const randomizeRotation = () =>
+  store.set(
+    (state) => ({
+      rotation: state.rotation.randomRotation()
+    }),
+    true
+  )
+```
+
 ### Subscribing to updates (imperatively)
 
 Use a store's `subscribe` function to register a callback that will be executed every time the store is changed.

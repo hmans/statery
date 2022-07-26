@@ -1,14 +1,16 @@
 import { makeStore } from "../src"
 
 describe("makeStore", () => {
-  const store = makeStore({
+  const init = () => ({
     foo: 0,
     bar: 0,
     active: false
   })
 
+  const store = makeStore(init())
+
   beforeEach(() => {
-    store.set({ foo: 0, bar: 0 })
+    store.set(init)
   })
 
   describe(".state", () => {
@@ -113,6 +115,19 @@ describe("makeStore", () => {
 
       /* The state has actually been updated */
       expect(store.state).toEqual({ foo: 1, bar: 0, active: true })
+
+      store.unsubscribe(listener)
+    })
+
+    it("receives all changes made to the store if the `force` flag is set", () => {
+      const listener = jest.fn()
+      store.subscribe(listener)
+
+      /* We're setting both foo and bar; only foo is actually a new value. */
+      store.set({ foo: 1, bar: 0 }, true)
+
+      /* Since we've forced the update, the changes now include the un-changed `bar`, as well */
+      expect(listener.mock.calls[0][0]).toEqual({ foo: 1, bar: 0 })
 
       store.unsubscribe(listener)
     })
