@@ -34,8 +34,7 @@
 
 ## SUMMARY
 
-```ts
-import * as React from "react"
+```tsx
 import { makeStore, useStore } from "statery"
 
 /* Make a store */
