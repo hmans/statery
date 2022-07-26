@@ -1,0 +1,8 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "statery": "0.5.4"
+  },
+  "changesets": []
+}
