@@ -27,7 +27,8 @@
     "dev": "yarn clean && rollup -c -w",
     "build": "yarn clean && rollup -c",
     "test": "jest",
-    "docs": "typedoc src/index.ts"
+    "docs": "typedoc src/index.ts",
+    "release": "yarn build && yarn test && yarn changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.24.1",
