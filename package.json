@@ -30,6 +30,7 @@
     "docs": "typedoc src/index.ts"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.24.1",
     "@testing-library/react": "^12.1",
     "@types/jest": "^26.0.19",
     "@types/react": "^17.0.0",
