@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@testing-library/react"
-import { StrictMode } from "react"
+import React, { StrictMode } from "react"
 import { makeStore, useStore } from "../src"
 
 describe("useStore", () => {
