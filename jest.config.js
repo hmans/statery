@@ -1,9 +1,10 @@
 module.exports = {
   verbose: true,
   preset: "ts-jest",
-  roots: ["src", "test"],
-  testMatch: ["**/__tests__/**/*.+(ts|tsx|js)", "**/?(*.)+(spec|test).+(ts|tsx|js)"],
+  testMatch: ["**/?(*.)+(spec|test).+(ts|tsx)"],
   testPathIgnorePatterns: ["node_modules"],
+  testEnvironment: "jsdom",
+  moduleFileExtensions: ["js", "ts", "tsx"],
   globals: {
     "ts-jest": {
       isolatedModules: true
