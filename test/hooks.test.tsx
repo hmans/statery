@@ -131,10 +131,12 @@ describe("useStore", () => {
 
     /* Check how often each component was rendered. Since we're using React's
        StrictMode, we need to double these numbers because StrictMode intentionally
-       renders everything twice. */
-    expect(woodRenderCount).toEqual(9 * 2)
-    expect(housesRenderCount).toEqual(2 * 2)
-    expect(buttonsRenderCount).toEqual(9 * 2)
+       renders everything twice. Also, we need to account for components doing
+       an initial re-render to catch up with store updates that might have been
+       written during the render and reconciliation phases (eg. through function refs.) */
+    expect(woodRenderCount).toEqual(10 * 2)
+    expect(housesRenderCount).toEqual(3 * 2)
+    expect(buttonsRenderCount).toEqual(10 * 2)
   })
 
   it("should not re-render a component when a watched prop was updated to the same value", async () => {
@@ -168,15 +170,15 @@ describe("useStore", () => {
 
     const { getByText, findByText } = render(<Counter />)
 
-    expect(renders).toBe(1)
+    expect(renders).toBe(2)
     await findByText("Counter: 0")
     fireEvent.click(getByText("Increase Counter"))
 
-    expect(renders).toBe(2)
+    expect(renders).toBe(3)
     await findByText("Counter: 1")
     fireEvent.click(getByText("Set to Same Value"))
 
-    expect(renders).toBe(2)
+    expect(renders).toBe(3)
   })
 
   it("works with boolean state properties", async () => {

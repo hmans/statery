@@ -176,6 +176,13 @@ export const useStore = <T extends State>(store: Store<T>): T => {
 
     /* Mount & unmount the listener */
     store.subscribe(listener)
+
+    /* Immediately bump the version to cause an initial re-render. Why are
+    we doing this? Because something might have changed in the store during
+    the same React render/reconciliation phase as this component (eg. through
+    a function ref.) */
+    setVersion((v) => v + 1)
+
     return () => void store.unsubscribe(listener)
   }, [store])
 
