@@ -164,6 +164,9 @@ export const useStore = <T extends State>(store: Store<T>): T => {
   /* A set containing all props that we're interested in. */
   const subscribedProps = useConst(() => new Set<keyof T>())
 
+  /* Get a copy of the state when the component is rendering. */
+  const initialState = useConst(() => ({ ...store.state }))
+
   /* Subscribe to changes in the store. */
   useLayoutEffect(() => {
     const listener: Listener<T> = (updates: Partial<T>) => {
@@ -181,7 +184,10 @@ export const useStore = <T extends State>(store: Store<T>): T => {
     we doing this? Because something might have changed in the store during
     the same React render/reconciliation phase as this component (eg. through
     a function ref.) */
-    setVersion((v) => v + 1)
+
+    subscribedProps.forEach((prop) => {
+      if (initialState[prop] !== store.state[prop]) setVersion((v) => v + 1)
+    })
 
     return () => void store.unsubscribe(listener)
   }, [store])
