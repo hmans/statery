@@ -187,7 +187,9 @@ export const useStore = <T extends State>(store: Store<T>): T => {
 
   /* On unmount, remove the listener from the store. */
   useLayoutEffect(() => {
-    return () => void store.unsubscribe(listener.current)
+    return () => {
+      store.unsubscribe(listener.current)
+    }
   }, [store])
 
   return new Proxy<Record<any, any>>(
