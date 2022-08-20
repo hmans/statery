@@ -164,8 +164,15 @@ export const useStore = <T extends State>(store: Store<T>): T => {
   /* A set containing all props that we're interested in. */
   const subscribedProps = useConst(() => new Set<keyof T>())
 
-  /* Subscribe to changes in the store. */
-  useLayoutEffect(() => {
+  /* Alright, we're going to do something crazy -- we're going to immediately create
+  the listener and subscribe it to the store, from within the render stage! Holy crap!
+  Why are we doing this? Because other components that are rendering within the same stage
+  might already be _writing to the store_ (for example, through function refs), and if we
+  only subscribe to updates in an effect, we'll miss those writes. Woops!
+  */
+  const listener = useRef<Listener<T>>(null!)
+
+  if (!listener.current) {
     const listener: Listener<T> = (updates: Partial<T>) => {
       /* If there is at least one prop being updated that we're interested in,
          bump our local version. */
@@ -174,9 +181,13 @@ export const useStore = <T extends State>(store: Store<T>): T => {
       }
     }
 
-    /* Mount & unmount the listener */
+    /* Subscribe to the store. This is what we came here for! */
     store.subscribe(listener)
-    return () => void store.unsubscribe(listener)
+  }
+
+  /* On unmount, remove the listener from the store. */
+  useLayoutEffect(() => {
+    return () => void store.unsubscribe(listener.current)
   }, [store])
 
   return new Proxy<Record<any, any>>(
