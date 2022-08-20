@@ -164,8 +164,21 @@ export const useStore = <T extends State>(store: Store<T>): T => {
   /* A set containing all props that we're interested in. */
   const subscribedProps = useConst(() => new Set<keyof T>())
 
-  /* Get a copy of the state when the component is rendering. */
-  const initialState = useConst(() => ({ ...store.state }))
+  /* Grab a copy of the state at the time the component is rendering; then, in an effect,
+  check if there have already been any updates. This can happen because something that
+  was rendered alongside this component wrote into the store immediately, possibly
+  through a function ref. If we detect a change related to the props we're interested in,
+  force the component to reload. */
+  const initialState = useConst(() => store.state)
+
+  useLayoutEffect(() => {
+    subscribedProps.forEach((prop) => {
+      if (initialState[prop] !== store.state[prop]) {
+        setVersion((v) => v + 1)
+        return
+      }
+    })
+  }, [store])
 
   /* Subscribe to changes in the store. */
   useLayoutEffect(() => {
@@ -179,15 +192,6 @@ export const useStore = <T extends State>(store: Store<T>): T => {
 
     /* Mount & unmount the listener */
     store.subscribe(listener)
-
-    /* Immediately bump the version to cause an initial re-render. Why are
-    we doing this? Because something might have changed in the store during
-    the same React render/reconciliation phase as this component (eg. through
-    a function ref.) */
-
-    subscribedProps.forEach((prop) => {
-      if (initialState[prop] !== store.state[prop]) setVersion((v) => v + 1)
-    })
 
     return () => void store.unsubscribe(listener)
   }, [store])
