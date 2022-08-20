@@ -131,9 +131,7 @@ describe("useStore", () => {
 
     /* Check how often each component was rendered. Since we're using React's
        StrictMode, we need to double these numbers because StrictMode intentionally
-       renders everything twice. Also, we need to account for components doing
-       an initial re-render to catch up with store updates that might have been
-       written during the render and reconciliation phases (eg. through function refs.) */
+       renders everything twice. */
     expect(woodRenderCount).toEqual(9 * 2)
     expect(housesRenderCount).toEqual(2 * 2)
     expect(buttonsRenderCount).toEqual(9 * 2)
