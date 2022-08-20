@@ -164,6 +164,24 @@ export const useStore = <T extends State>(store: Store<T>): T => {
   /* A set containing all props that we're interested in. */
   const subscribedProps = useConst(() => new Set<keyof T>())
 
+  /* Grab a copy of the state at the time the component is rendering; then, in an effect,
+  check if there have already been any updates. This can happen because something that
+  was rendered alongside this component wrote into the store immediately, possibly
+  through a function ref. If we detect a change related to the props we're interested in,
+  force the component to reload. */
+  const initialState = useConst(() => store.state)
+
+  useLayoutEffect(() => {
+    if (store.state === initialState) return
+
+    subscribedProps.forEach((prop) => {
+      if (initialState[prop] !== store.state[prop]) {
+        setVersion((v) => v + 1)
+        return
+      }
+    })
+  }, [store])
+
   /* Subscribe to changes in the store. */
   useLayoutEffect(() => {
     const listener: Listener<T> = (updates: Partial<T>) => {
