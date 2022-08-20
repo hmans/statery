@@ -194,7 +194,6 @@ export const useStore = <T extends State>(store: Store<T>): T => {
 
     /* Mount & unmount the listener */
     store.subscribe(listener)
-
     return () => void store.unsubscribe(listener)
   }, [store])
 
