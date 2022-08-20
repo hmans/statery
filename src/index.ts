@@ -172,6 +172,8 @@ export const useStore = <T extends State>(store: Store<T>): T => {
   const initialState = useConst(() => store.state)
 
   useLayoutEffect(() => {
+    if (store.state === initialState) return
+
     subscribedProps.forEach((prop) => {
       if (initialState[prop] !== store.state[prop]) {
         setVersion((v) => v + 1)
