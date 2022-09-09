@@ -1,16 +1,16 @@
-name: Release
+name: Tests
 
 on:
   push:
     branches:
-      - main
-
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+      - "main"
+  pull_request: {}
 
 jobs:
-  release:
-    name: Stable Release / Version PR
+  build:
+    name: Build and Run Tests
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -43,18 +43,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          version: pnpm ci:version
-          publish: pnpm ci:release
-          # commit: "chore: update versions"
-          # title: "chore: update versions"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      # - name: Send a Slack notification if a publish happens
-      #   if: steps.changesets.outputs.published == 'true'
-      #   # You can do something when a publish happens.
-      #   run: my-slack-bot send-notification --message "A new version of ${GITHUB_REPOSITORY} was published!"
+      - name: Run CI task
+        run: pnpm ci
