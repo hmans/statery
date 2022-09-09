@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0-next.3
+
+### Minor Changes
+
+- 5b64a96: Switched the library's build tool to [Preconstruct](https://preconstruct.tools/). If everything breaks, it's on me! 🎉
+
 ## 0.6.0-next.2
 
 ### Patch Changes
