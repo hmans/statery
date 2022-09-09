@@ -41,7 +41,7 @@
     "build": "preconstruct build",
     "test": "jest",
     "docs": "typedoc src/index.ts",
-    "release": "yarn build && yarn test && yarn changeset publish"
+    "release": "pnpm build && pnpm test && pnpm changeset publish"
   },
   "devDependencies": {
     "@babel/core": "^7.19.0",
