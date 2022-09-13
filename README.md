@@ -36,11 +36,11 @@
 
 [Zustand](https://github.com/pmndrs/zustand) is a lovely minimal state management library for React, and Statery may feel very similar to it. Here are the key differences:
 
-- In Zustand, data and the functions that modify it are all stored in the same object. I believe this to be architecturally unwise (the README even warns the user not to accidentally overwrite their store's API.) Furthermore, this leads to Zustand [not being able to infer the type](https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md) of the state data from the `create` function's first argument, forcing you to provide it explicitly (including the API, because it's part of the state... and so on.)
+- In Zustand, **data and the functions that modify it are all stored in the same object**. I believe this to be architecturally unwise (the README even warns the user not to accidentally overwrite their store's API.) Furthermore, this leads to Zustand [not being able to infer the type](https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md) of the state data from the `create` function's first argument, forcing you to provide it explicitly (including the API, because it's part of the state... and so on.)
 
-  Statery doesn't share these problems; stores _only_ contain data. You can either modify it directly, or – the recommended approach – export an API for your store as a set of functions (see the examples in this document or the [demo] for what this looks like.)
+  Statery doesn't share these problems; **stores _only_ contain data**. You can either modify it directly, or – the recommended approach – export an API for your store as a set of functions (see the examples in this document or the [demo] for what this looks like.)
 
-- When accessing data using Zustand's `useStore` hook, it expects you to provide a selector function that returns the data you want. Statery's `useStore` instead uses a transparent proxy that automatically registers all state properties you acceess. You don't have to do anything special to get this to work, and you never have to worry about causing re-renders for updated data your component isn't actually interested in.
+- When accessing data using Zustand's `useStore` hook, **it expects you to provide a selector function** that returns the data you want. Statery's `useStore` instead uses a **transparent proxy** that automatically registers all state properties you acceess. **You don't have to do anything special** to use this, and you never have to worry about causing re-renders for updated data your component isn't actually interested in.
 
 - Not that it matters much with packages this tiny, but Statery is _even smaller_ than Zustand (at roughly 50% the size.)
 
