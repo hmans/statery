@@ -16,13 +16,13 @@ import { useLayoutEffect, useRef, useState } from "react"
 /**
  * The state objects managed by Statery stores are any string-indexed JavaScript objects.
  */
-export type State = Record<string, any>
+export interface IState extends Record<string, any> { }
 
 /**
  * Statery stores wrap around a State object and provide a few functions to update them
  * and, in turn, subscribe to updates.
  */
-export type Store<T extends State = State> = {
+export type Store<T extends IState = Record<string, any>> = {
   /**
    * Return the current state.
    */
@@ -60,12 +60,12 @@ export type Store<T extends State = State> = {
   unsubscribe: (listener: Listener<T>) => void
 }
 
-export type StateUpdateFunction<T extends State> = (state: Readonly<T>) => Partial<T>
+export type StateUpdateFunction<T extends IState> = (state: Readonly<T>) => Partial<T>
 
 /**
  * A callback that can be passed to a store's `subscribe` and `unsubscribe` functions.
  */
-export type Listener<T extends State> = (updates: Readonly<Partial<T>>, state: Readonly<T>) => void
+export type Listener<T extends IState> = (updates: Readonly<Partial<T>>, state: Readonly<T>) => void
 
 /*
 
@@ -85,7 +85,7 @@ export type Listener<T extends State> = (updates: Readonly<Partial<T>>, state: R
  *
  * @param initialState The state object that will be wrapped by the store.
  */
-export const makeStore = <T extends State>(initialState: T): Store<T> => {
+export const makeStore = <T extends IState>(initialState: T): Store<T> => {
   let state = initialState
   const listeners = new Set<Listener<T>>()
 
@@ -157,7 +157,7 @@ export const makeStore = <T extends State>(initialState: T): Store<T> => {
  *
  * @param store The Statery store to access.
  */
-export const useStore = <T extends State>(store: Store<T>): T => {
+export const useStore = <T extends IState>(store: Store<T>): T => {
   /* A cheap version state that we will bump in order to re-render the component. */
   const [, setVersion] = useState(0)
 
