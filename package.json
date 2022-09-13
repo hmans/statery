@@ -19,7 +19,9 @@
   "module": "dist/statery.esm.js",
   "types": "dist/statery.cjs.js",
   "files": [
-    "**"
+    "dist/",
+    "README.md",
+    "LICENSE.md"
   ],
   "license": "MIT",
   "babel": {
