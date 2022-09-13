@@ -1,5 +1,0 @@
----
-"statery": minor
----
-
-Simplify types.
