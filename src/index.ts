@@ -43,7 +43,7 @@ export type Store<T extends IState = Record<string, any>> = {
    *
    * @see StateUpdateFunction
    */
-  set: (updates: Partial<T> | StateUpdateFunction<T>, forceNotify?: boolean) => T
+  set: (updates: Partial<T> | StateUpdateFunction<T>, options?: SetOptions) => T
 
   /**
    * Subscribe to changes to the store's state. Every time the store is updated, the provided
@@ -61,6 +61,11 @@ export type Store<T extends IState = Record<string, any>> = {
 }
 
 export type StateUpdateFunction<T extends IState> = (state: Readonly<T>) => Partial<T>
+
+/**
+ * Options for the `set` function.
+ */
+export type SetOptions = { forceNotify?: boolean }
 
 /**
  * A callback that can be passed to a store's `subscribe` and `unsubscribe` functions.
@@ -100,7 +105,7 @@ export const makeStore = <T extends IState>(initialState: T): Store<T> => {
       return state
     },
 
-    set: (incoming, forceNotify = false) => {
+    set: (incoming, { forceNotify = false }: SetOptions = {}) => {
       /* If the argument is a function, run it */
       const incomingState = incoming instanceof Function ? incoming(state) : incoming
 

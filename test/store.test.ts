@@ -124,7 +124,7 @@ describe("makeStore", () => {
       store.subscribe(listener)
 
       /* We're setting both foo and bar; only foo is actually a new value. */
-      store.set({ foo: 1, bar: 0 }, true)
+      store.set({ foo: 1, bar: 0 }, { forceNotify: true })
 
       /* Since we've forced the update, the changes now include the un-changed `bar`, as well */
       expect(listener.mock.calls[0][0]).toEqual({ foo: 1, bar: 0 })
