@@ -1,8 +1,3 @@
-[![Version](https://img.shields.io/npm/v/statery)](https://www.npmjs.com/package/statery)
-[![CI](https://github.com/hmans/statery/workflows/CI/badge.svg)](https://github.com/hmans/statery/actions?query=workflow%3ACI)
-[![Downloads](https://img.shields.io/npm/dt/statery.svg)](https://www.npmjs.com/package/statery)
-[![Bundle Size](https://img.shields.io/bundlephobia/min/statery?label=bundle%20size)](https://bundlephobia.com/result?p=statery)
-
 ```
                                           💥           ⭐️            💥      ✨
                              ✨                                ✨
@@ -16,6 +11,11 @@
   SURPRISE-FREE STATE MANAGEMENT!                💥
                                                               ✨
 ```
+
+[![Version](https://img.shields.io/npm/v/statery?style=for-the-badge)](https://www.npmjs.com/package/statery)
+[![CI](https://img.shields.io/github/workflow/status/hmans/statery/CI?style=for-the-badge)](https://github.com/hmans/statery/actions?query=workflow%3ACI)
+[![Downloads](https://img.shields.io/npm/dt/statery.svg?style=for-the-badge)](https://www.npmjs.com/package/statery)
+[![Bundle Size](https://img.shields.io/bundlephobia/min/statery?label=bundle%20size&style=for-the-badge)](https://bundlephobia.com/result?p=statery)
 
 ### Features 🎉
 
@@ -32,23 +32,31 @@
 - While the `useStore` hook makes use of **proxies**, the store contents themselves are never wrapped in proxy objects. (If you're looking for a fully proxy-based solution, I recommend [Valtio].)
 - **React Class Components** are not supported (but PRs welcome!)
 
+### Comparison to Zustand
+
+[Zustand](https://github.com/pmndrs/zustand) is a lovely minimal state management library for React, and Statery may feel very similar to it. Here are the key differences:
+
+- In Zustand, data and the functions that modify it are all stored in the same object. I believe this to be architecturally unwise (the README even warns the user not to accidentally overwrite their store's API.) Furthermore, this leads to Zustand [not being able to infer the type](https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md) of the state data from the `create` function's first argument, forcing you to provide it explicitly (including the API, because it's part of the state... and so on.)
+
+  Statery doesn't share these problems; stores _only_ contain data. You can either modify it directly, or – the recommended approach – export an API for your store as a set of functions (see the examples in this document or the [demo] for what this looks like.)
+
+- When accessing data using Zustand's `useStore` hook, it expects you to provide a selector function that returns the data you want. Statery's `useStore` instead uses a transparent proxy that automatically registers all state properties you acceess. You don't have to do anything special to get this to work, and you never have to worry about causing re-renders for updated data your component isn't actually interested in.
+
+- Not that it matters much with packages this tiny, but Statery is _even smaller_ than Zustand (at roughly 50% the size.)
+
 ## SUMMARY
 
 ```tsx
-import { makeStore, useStore } from "statery"
+import { value makeStore, value useStore } from "statery"
 
-/* Make a store */
 const store = makeStore({ counter: 0 })
 
-/* Write some code that updates it */
 const increment = () =>
   store.set((state) => ({
     counter: state.counter + 1
   }))
 
 const Counter = () => {
-  /* Fetch data from the store (and automatically re-render
-     when it changes!) */
   const { counter } = useStore(store)
 
   return (
@@ -65,13 +73,9 @@ const Counter = () => {
 ### Adding it to your Project
 
 ```
-npm install statery
-```
-
-or
-
-```
+npm add statery
 yarn add statery
+pnpm add statery
 ```
 
 ### Creating a Store
@@ -79,7 +83,7 @@ yarn add statery
 Statery stores wrap around plain old JavaScript objects that are free to contain any kind of data:
 
 ```ts
-import { makeStore } from "statery"
+import { value makeStore } from "statery"
 
 const store = makeStore({
   player: {
@@ -126,7 +130,7 @@ Updates will be shallow-merged with the current state, meaning that top-level pr
 Within a React component, use the `useStore` hook to read data from the store:
 
 ```tsx
-import { useStore } from "statery"
+import { value useStore } from "statery"
 
 const Wood = () => {
   const { wood } = useStore(store)
@@ -253,8 +257,8 @@ If the state structure `makeStore` infers from its initial state argument is not
 
 ```tsx
 const store = makeStore<{ name?: string }>({})
-store.set({ name: "Statery" }) // ✅  All good
-store.set({ foo: 123 }) // 😭  TypeScript warning
+store.set({ name: "Statery" })
+store.set({ foo: 123 })
 ```
 
 ## NOTES
