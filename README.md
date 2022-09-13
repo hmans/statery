@@ -38,7 +38,7 @@
 
 - In Zustand, **data and the functions that modify it are all stored in the same object**. I believe this to be architecturally unwise (the README even warns the user not to accidentally overwrite their store's API.) Furthermore, this leads to Zustand [not being able to infer the type](https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md) of the state data from the `create` function's first argument, forcing you to provide it explicitly (including the API, because it's part of the state... and so on.)
 
-  Statery doesn't share these problems; **stores _only_ contain data**. You can either modify it directly, or – the recommended approach – export an API for your store as a set of functions (see the examples in this document or the [demo] for what this looks like.)
+  Statery doesn't share these problems; **stores _only_ contain data**. The store's type is inferred from the initial state passed into `makeStore`. You can either modify the state directly through `set`, or – the recommended approach – export an API for your store as a set of functions (see the examples in this document or the [demo] for what this looks like.)
 
 - When accessing data using Zustand's `useStore` hook, **it expects you to provide a selector function** that returns the data you want. Statery's `useStore` instead uses a **transparent proxy** that automatically registers all state properties you acceess. **You don't have to do anything special** to use this, and you never have to worry about causing re-renders for updated data your component isn't actually interested in.
 
