@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.6.0
+
+### Minor Changes
+
+- d2eb9b4: **Fixed:** `useStore` now hooks into the store using `useLayoutEffect`, not `useEffect`
+- 53fff47: Refreshed all of the package's dependencies and brushed up its test setup.
+- 5b64a96: Switched the library's build tool to [Preconstruct](https://preconstruct.tools/). If everything breaks, it's on me! 🎉
+- 53fff47: Statery now requires React 18 and up!
+- 75d0a40: Simplify types.
+- da27eba: `set` now takes a second options argument. The only available option so far is `forceNotify`; when set to true, all updated properties will be notified, regardless of referential equality to the previous value.
+
+### Patch Changes
+
+- a5f5533: `useStore` will now force the component to re-render if a change was detected between the React render/reconcile stage and the invocation of the layout effect that actually sets up the subscription listener. This improves reactivity in situations where values were changed in the store during the render phase, or imperatively from outside of your React component tree.
+
 ## 0.6.0-next.3
 
 ### Minor Changes
