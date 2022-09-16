@@ -200,7 +200,7 @@ export const useStore = <T extends IState>(store: Store<T>): T => {
     /* Mount & unmount the listener */
     store.subscribe(listener)
     return () => void store.unsubscribe(listener)
-  }, [store])
+  }, [store, v])
 
   return new Proxy<Record<any, any>>(
     {},
