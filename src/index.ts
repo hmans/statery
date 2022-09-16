@@ -16,7 +16,7 @@ import { useLayoutEffect, useRef, useState } from "react"
 /**
  * The state objects managed by Statery stores are any string-indexed JavaScript objects.
  */
-export interface IState extends Record<string, any> { }
+export interface IState extends Record<string, any> {}
 
 /**
  * Statery stores wrap around a State object and provide a few functions to update them
@@ -164,7 +164,7 @@ export const makeStore = <T extends IState>(initialState: T): Store<T> => {
  */
 export const useStore = <T extends IState>(store: Store<T>): T => {
   /* A cheap version state that we will bump in order to re-render the component. */
-  const [, setVersion] = useState(0)
+  const [v, setVersion] = useState(0)
 
   /* A set containing all props that we're interested in. */
   const subscribedProps = useConst(() => new Set<keyof T>())
@@ -181,7 +181,7 @@ export const useStore = <T extends IState>(store: Store<T>): T => {
 
     subscribedProps.forEach((prop) => {
       if (initialState[prop] !== store.state[prop]) {
-        setVersion((v) => v + 1)
+        setVersion(v + 1)
         return
       }
     })
@@ -193,14 +193,14 @@ export const useStore = <T extends IState>(store: Store<T>): T => {
       /* If there is at least one prop being updated that we're interested in,
          bump our local version. */
       if (Object.keys(updates).find((prop) => subscribedProps.has(prop))) {
-        setVersion((v) => v + 1)
+        setVersion(v + 1)
       }
     }
 
     /* Mount & unmount the listener */
     store.subscribe(listener)
     return () => void store.unsubscribe(listener)
-  }, [store])
+  }, [store, v])
 
   return new Proxy<Record<any, any>>(
     {},
