@@ -181,7 +181,7 @@ export const useStore = <T extends IState>(store: Store<T>): T => {
 
     subscribedProps.forEach((prop) => {
       if (initialState[prop] !== store.state[prop]) {
-        setVersion(v + 1)
+        setVersion((v) => v + 1)
         return
       }
     })
@@ -193,14 +193,14 @@ export const useStore = <T extends IState>(store: Store<T>): T => {
       /* If there is at least one prop being updated that we're interested in,
          bump our local version. */
       if (Object.keys(updates).find((prop) => subscribedProps.has(prop))) {
-        setVersion(v + 1)
+        setVersion((v) => v + 1)
       }
     }
 
     /* Mount & unmount the listener */
     store.subscribe(listener)
     return () => void store.unsubscribe(listener)
-  }, [store, v])
+  }, [store])
 
   return new Proxy<Record<any, any>>(
     {},
