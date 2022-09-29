@@ -1,21 +1,36 @@
-import { makeStore } from "../src"
+import { makeStore, Store } from "../src"
 
 describe("makeStore", () => {
+  type StoreType = {
+    foo: number,
+    bar: number,
+    active: boolean
+    optional?: string
+  }
   const init = () => ({
     foo: 0,
     bar: 0,
     active: false
   })
 
-  const store = makeStore(init())
+  let store: Store<StoreType>
 
   beforeEach(() => {
+    store = makeStore<StoreType>(init());
     store.set(init)
   })
 
   describe(".state", () => {
     it("provides direct access to the state object", () => {
       expect(store.state).toEqual({ foo: 0, bar: 0, active: false })
+    })
+  })
+
+  describe(".overwrite", () => {
+    it("overwrites the state", () => {
+      store.set({ optional: "10" });
+      store.overwrite(init())
+      expect(store.state).toEqual(init())
     })
   })
 

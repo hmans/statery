@@ -16,7 +16,7 @@ import { useLayoutEffect, useRef, useState } from "react"
 /**
  * The state objects managed by Statery stores are any string-indexed JavaScript objects.
  */
-export interface IState extends Record<string, any> {}
+export interface IState extends Record<string, any> { }
 
 /**
  * Statery stores wrap around a State object and provide a few functions to update them
@@ -44,6 +44,16 @@ export type Store<T extends IState = Record<string, any>> = {
    * @see StateUpdateFunction
    */
   set: (updates: Partial<T> | StateUpdateFunction<T>, options?: SetOptions) => T
+
+  /**
+   * Overwrites the store. Accepts an object of T that will become the current state. 
+   * 
+   * Returns the new state of the store
+   * 
+   * @example
+   * store.overwrite({ foo: 1 })
+   */
+  overwrite: (overwrite: T) => T
 
   /**
    * Subscribe to changes to the store's state. Every time the store is updated, the provided
@@ -100,37 +110,43 @@ export const makeStore = <T extends IState>(initialState: T): Store<T> => {
       return changes
     }, {})
 
+  const set = (incoming: Partial<T> | StateUpdateFunction<T>, { forceNotify = false }: SetOptions = {}) => {
+    /* If the argument is a function, run it */
+    const incomingState = incoming instanceof Function ? incoming(state) : incoming
+
+    /*
+    Check which updates we're actually applying. If forceNotify is enabled,
+    we'll use (and notify for) all of them; otherwise, we'll check them against
+    the current state to only change (and notify for) the properties
+    that have changed from the current state.
+    */
+    const updates = forceNotify ? incomingState : getActualChanges(incomingState)
+
+    /* Has anything changed? */
+    if (Object.keys(updates).length > 0) {
+      /* Keep a reference to the previous state, we're going to need it in a second */
+      const previousState = state
+
+      /* Apply updates */
+      state = { ...state, ...updates }
+
+      /* Execute listeners */
+      for (const listener of listeners) listener(updates, previousState)
+    }
+    return state
+  }
+
   return {
     get state() {
       return state
     },
 
-    set: (incoming, { forceNotify = false }: SetOptions = {}) => {
-      /* If the argument is a function, run it */
-      const incomingState = incoming instanceof Function ? incoming(state) : incoming
+    overwrite: (overwrite: T) => set({
+      ...(Object.keys(state).reduce((r, l) => ({ ...r, [l]: undefined }), {} as T)),
+      ...overwrite
+    }),
 
-      /*
-      Check which updates we're actually applying. If forceNotify is enabled,
-      we'll use (and notify for) all of them; otherwise, we'll check them against
-      the current state to only change (and notify for) the properties
-      that have changed from the current state.
-      */
-      const updates = forceNotify ? incomingState : getActualChanges(incomingState)
-
-      /* Has anything changed? */
-      if (Object.keys(updates).length > 0) {
-        /* Keep a reference to the previous state, we're going to need it in a second */
-        const previousState = state
-
-        /* Apply updates */
-        state = { ...state, ...updates }
-
-        /* Execute listeners */
-        for (const listener of listeners) listener(updates, previousState)
-      }
-
-      return state
-    },
+    set,
 
     subscribe: (listener) => {
       listeners.add(listener)
@@ -168,24 +184,6 @@ export const useStore = <T extends IState>(store: Store<T>): T => {
 
   /* A set containing all props that we're interested in. */
   const subscribedProps = useConst(() => new Set<keyof T>())
-
-  /* Grab a copy of the state at the time the component is rendering; then, in an effect,
-  check if there have already been any updates. This can happen because something that
-  was rendered alongside this component wrote into the store immediately, possibly
-  through a function ref. If we detect a change related to the props we're interested in,
-  force the component to reload. */
-  const initialState = useConst(() => store.state)
-
-  useLayoutEffect(() => {
-    if (store.state === initialState) return
-
-    subscribedProps.forEach((prop) => {
-      if (initialState[prop] !== store.state[prop]) {
-        setVersion((v) => v + 1)
-        return
-      }
-    })
-  }, [store])
 
   /* Subscribe to changes in the store. */
   useLayoutEffect(() => {
