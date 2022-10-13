@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 
 /*
 
@@ -156,6 +156,14 @@ export const makeStore = <T extends IState>(initialState: T): Store<T> => {
 */
 
 /**
+ * If a component is loaded in a SSR context and imports the useStore hook,
+ * React will trigger a warning that says: "useLayoutEffect does nothing on
+ * the server". To surpress this warning, we need to check if window is
+ * defined.
+ */
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect
+
+/**
  * Provides reactive read access to a Statery store. Returns a proxy object that
  * provides direct access to the store's state and makes sure that the React component
  * it was invoked from automaticaly re-renders when any of the data it uses is updated.
@@ -176,7 +184,7 @@ export const useStore = <T extends IState>(store: Store<T>): T => {
   force the component to reload. */
   const initialState = useConst(() => store.state)
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (store.state === initialState) return
 
     subscribedProps.forEach((prop) => {
@@ -188,7 +196,7 @@ export const useStore = <T extends IState>(store: Store<T>): T => {
   }, [store])
 
   /* Subscribe to changes in the store. */
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const listener: Listener<T> = (updates: Partial<T>) => {
       /* If there is at least one prop being updated that we're interested in,
          bump our local version. */
