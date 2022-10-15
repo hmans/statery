@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.3
+
+### Patch Changes
+
+- a9923df: **Fixed:** The library recently started using `useLayoutEffect` instead of `useEffect`, breaking it in SSR environments, where usage of that hook throws errors. This has been fixed. (Thanks @daveschumaker!)
+
 ## 0.6.2
 
 ### Patch Changes
