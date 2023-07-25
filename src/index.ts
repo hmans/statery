@@ -167,10 +167,13 @@ export const useStore = <T extends IState>(store: Store<T>): T => {
   const subscribedProps = useConst(() => new Set<keyof T>())
   const prevSnapshot = useRef(store.state)
 
-  const subscribe = useCallback((listener: () => void) => {
-    store.subscribe(listener)
-    return () => store.unsubscribe(listener)
-  }, [])
+  const subscribe = useCallback(
+    (listener: () => void) => {
+      store.subscribe(listener)
+      return () => store.unsubscribe(listener)
+    },
+    [store]
+  )
 
   const getSnapshot = useCallback(() => {
     let hasChanged = false
