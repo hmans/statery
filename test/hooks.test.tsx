@@ -204,4 +204,28 @@ describe("useStore", () => {
     fireEvent.click(page.getByText("Toggle"))
     await page.findByText("Active: No")
   })
+
+  it("re-renders if a property is changed during the render phase", async () => {
+    let changedDuringRender = false
+    let renders = 0
+
+    const store = makeStore({ lightning: "Slow" })
+
+    const Lightning = () => {
+      renders++
+      const { lightning } = useStore(store)
+
+      if (!changedDuringRender) {
+        store.set({ lightning: "Fast" })
+        changedDuringRender = true
+      }
+
+      return <p>Lightning: {lightning}</p>
+    }
+
+    const page = render(<Lightning />)
+
+    await page.findByText("Lightning: Fast")
+    expect(renders).toBe(2)
+  })
 })
