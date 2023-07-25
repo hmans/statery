@@ -173,8 +173,14 @@ export const useStore = <T extends IState>(store: Store<T>): T => {
   }, [])
 
   const getSnapshot = useCallback(() => {
-    const props = Array.from(subscribedProps)
-    const hasChanged = props.some((prop) => store.state[prop] !== prevSnapshot.current[prop])
+    let hasChanged = false
+
+    for (const prop of subscribedProps) {
+      if (store.state[prop] !== prevSnapshot.current[prop]) {
+        hasChanged = true
+        break
+      }
+    }
 
     if (hasChanged) {
       prevSnapshot.current = store.state
