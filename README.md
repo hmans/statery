@@ -22,7 +22,7 @@
 - Simple, **noise- and surprise-free API**. Check out the [demo]!
 - **Extremely compact**, both in bundle size as well as API surface (2 exported functions!)
 - Fully **tested**, fully **typed**!
-- **Designed for React** (with functional components and hooks), but can also be used **without it**.
+- **Designed for React** (with functional components and hooks), but can also be used **without it**, or with other frameworks (but you may need to bring your own glue.)
 
 ### Non-Features 🧤
 
@@ -32,22 +32,10 @@
 - While the `useStore` hook makes use of **proxies**, the store contents themselves are never wrapped in proxy objects. (If you're looking for a fully proxy-based solution, I recommend [Valtio].)
 - **React Class Components** are not supported (but PRs welcome!)
 
-### Comparison to Zustand
-
-[Zustand](https://github.com/pmndrs/zustand) is a lovely minimal state management library for React, and Statery may feel very similar to it. Here are the key differences:
-
-- In Zustand, **data and the functions that modify it are all stored in the same object**. I believe this to be architecturally unwise (the README even warns the user not to accidentally overwrite their store's API.) Furthermore, this leads to Zustand [not being able to infer the type](https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md) of the state data from the `create` function's first argument, forcing you to provide it explicitly (including the API, because it's part of the state... and so on.)
-
-  Statery doesn't share these problems; **stores _only_ contain data**. The store's type is inferred from the initial state passed into `makeStore`. You can either modify the state directly through `set`, or – the recommended approach – export an API for your store as a set of functions (see the examples in this document or the [demo] for what this looks like.)
-
-- When accessing data using Zustand's `useStore` hook, **it expects you to provide a selector function** that returns the data you want. Statery's `useStore` instead uses a **transparent proxy** that automatically registers all state properties you acceess. **You don't have to do anything special** to use this, and you never have to worry about causing re-renders for updated data your component isn't actually interested in.
-
-- Not that it matters much with packages this tiny, but Statery is _even smaller_ than Zustand (at roughly 50% the size.)
-
 ## SUMMARY
 
 ```tsx
-import { value makeStore, value useStore } from "statery"
+import { makeStore, useStore } from "statery"
 
 const store = makeStore({ counter: 0 })
 
@@ -67,6 +55,8 @@ const Counter = () => {
   )
 }
 ```
+
+For a more fully-featured example, please check out the [demo].
 
 ## BASIC USAGE
 
@@ -97,9 +87,15 @@ const store = makeStore({
 })
 ```
 
+If you're using TypeScript, the type of the store state will be inferred from the initial state; but you may also pass a type argument to `makeStore` to explicitly set the type of the store:
+
+```ts
+const store = makeStore<{ count: number }>({ count: 0 })
+```
+
 ### Updating the Store
 
-Update the store contents using its `set` function:
+The store object's `set` function will update the store's state and notify any listeners who have subscribed to changes:
 
 ```tsx
 const collectWood = () =>
@@ -139,7 +135,7 @@ const Wood = () => {
 }
 ```
 
-When any of the data your components access changes in the store, they will automatically re-render.
+When any of the store's properties that your component accesses are updated, they will automatically re-render, automatically receiving the new state.
 
 ### Reading from a Store (without React)
 
@@ -185,14 +181,14 @@ const buyHouse = () =>
   )
 ```
 
-...as well as React components, which will automatically be rerendered if any of the underlying data changes:
+...as well as React components, which will automatically be re-rendered if any of the underlying data changes:
 
 ```tsx
 const BuyHouseButton = () => {
-  const proxy = useStore(store)
+  const store = useStore(store)
 
   return (
-    <button onClick={buyHouse} disabled={!canBuyHouse(proxy)}>
+    <button onClick={buyHouse} disabled={!canBuyHouse(store)}>
       Buy House (5g, 5w)
     </button>
   )
@@ -238,29 +234,6 @@ store.set((state) => ({ count: state.count + 1 }))
 store.unsubscribe(console.log)
 ```
 
-### Async updates
-
-Your Statery store doesn't know or care about asynchronicity -- simply call `set` whenever your data is ready:
-
-```ts
-const fetchPosts = async () => {
-  const posts = await loadPosts()
-  store.set({ posts })
-}
-```
-
-### TypeScript support
-
-Statery is written in TypeScript, and its stores are fully typed. `useStore` knows about the structure of your store, and if you're about to update a store with a property that it doesn't know about, TypeScript will warn you.
-
-If the state structure `makeStore` infers from its initial state argument is not what you want, you can explicitly pass a store type to `makeStore`:
-
-```tsx
-const store = makeStore<{ name?: string }>({})
-store.set({ name: "Statery" })
-store.set({ foo: 123 })
-```
-
 ## NOTES
 
 ### Stuff that probably needs work
@@ -271,7 +244,7 @@ store.set({ foo: 123 })
 
 Statery was born after spending a lot of time with the excellent state management libraries provided by the [Poimandres](https://github.com/pmndrs) collective, [Zustand] and [Valtio]. Statery started out as an almost-clone of Zustand, but with the aim of providing an even simpler API. The `useStore` hook API was inspired by Valtio's very nice `useProxy`.
 
-Statery is written and maintained by Hendrik Mans. [Get in touch on Twitter](https://twitter.com/hmans)!
+Statery is written and maintained by [Hendrik Mans](https://www.hmans.dev/).
 
 [demo]: https://codesandbox.io/s/statery-clicker-game-hjxk3?file=/src/App.tsx
 [zustand]: https://github.com/pmndrs/zustand
