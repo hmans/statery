@@ -13,7 +13,7 @@
 ```
 
 [![Version](https://img.shields.io/npm/v/statery?style=for-the-badge)](https://www.npmjs.com/package/statery)
-[![CI](https://img.shields.io/github/workflow/status/hmans/statery/CI?style=for-the-badge)](https://github.com/hmans/statery/actions?query=workflow%3ACI)
+![CI](https://img.shields.io/github/actions/workflow/status/hmans/statery/tests.yml?style=for-the-badge)
 [![Downloads](https://img.shields.io/npm/dt/statery.svg?style=for-the-badge)](https://www.npmjs.com/package/statery)
 [![Bundle Size](https://img.shields.io/bundlephobia/min/statery?label=bundle%20size&style=for-the-badge)](https://bundlephobia.com/result?p=statery)
 
