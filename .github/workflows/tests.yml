@@ -24,7 +24,7 @@ jobs:
         name: Install pnpm
         id: pnpm-install
         with:
-          version: 7
+          version: 8
           run_install: false
 
       - name: Get pnpm store directory
@@ -44,4 +44,4 @@ jobs:
         run: pnpm install
 
       - name: Run CI task
-        run: pnpm ci
+        run: pnpm ci:test

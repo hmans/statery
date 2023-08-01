@@ -44,9 +44,9 @@
     "build": "preconstruct build",
     "test": "jest",
     "docs": "typedoc src/index.ts",
-    "ci": "preconstruct validate && pnpm build && pnpm test",
+    "ci:test": "preconstruct validate && pnpm build && pnpm test",
     "ci:version": "changeset version && pnpm install --no-frozen-lockfile",
-    "ci:release": "pnpm ci && pnpm changeset publish"
+    "ci:release": "pnpm ci:test && pnpm changeset publish"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
