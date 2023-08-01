@@ -5,9 +5,14 @@ module.exports = {
   testPathIgnorePatterns: ["node_modules"],
   testEnvironment: "jsdom",
   moduleFileExtensions: ["js", "ts", "tsx"],
-  globals: {
-    "ts-jest": {
-      isolatedModules: true
-    }
+  transform: {
+    "^.+\\.tsx?$": [
+      "ts-jest",
+      {
+        isolatedModules: true,
+        babel: true,
+        tsconfig: "tsconfig.json"
+      }
+    ]
   }
 }
