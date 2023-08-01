@@ -43,7 +43,6 @@
     "dev": "preconstruct dev",
     "build": "preconstruct build",
     "test": "jest",
-    "docs": "typedoc src/index.ts",
     "ci:test": "preconstruct validate && pnpm build && pnpm test",
     "ci:version": "changeset version && pnpm install --no-frozen-lockfile",
     "ci:release": "pnpm ci:test && pnpm changeset publish"
@@ -66,7 +65,6 @@
     "rimraf": "^5.0.1",
     "ts-jest": "^29.1.1",
     "tslib": "^2.6.1",
-    "typedoc": "^0.24.8",
     "typescript": "^5.1.6"
   },
   "peerDependencies": {
