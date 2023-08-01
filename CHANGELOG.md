@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- 8928b16: Statery's React hooks now internally use React 18's new `useSyncExternalStore` hook. This simplifies the library implementation and makes sure that store updates don't cause UI drift.
+- 8928b16: Statery's React hooks now internally use React 18's new `useSyncExternalStore` hook. This simplifies the library implementation and makes sure that store updates don't cause UI drift. (Thanks @smartinio!)
 - 8c555e2: This package is now built using TypeScript 5.1.
 
 ## 0.6.3
