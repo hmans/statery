@@ -3,7 +3,7 @@
   "author": {
     "name": "Hendrik Mans",
     "email": "hendrik@mans.de",
-    "url": "https://hendrik.mans.de"
+    "url": "https://hmans.dev"
   },
   "description": "A happy little state management library for React and friends.",
   "homepage": "https://github.com/hmans/statery",
@@ -17,7 +17,7 @@
   "version": "0.6.3",
   "main": "dist/statery.cjs.js",
   "module": "dist/statery.esm.js",
-  "types": "dist/statery.cjs.js",
+  "types": "dist/statery.cjs.d.ts",
   "files": [
     "dist/",
     "README.md",
@@ -29,13 +29,7 @@
     "presets": [
       "@babel/preset-env",
       "@babel/preset-react",
-      [
-        "@babel/preset-typescript",
-        {
-          "isTSX": true,
-          "allExtensions": true
-        }
-      ]
+      "@babel/preset-typescript"
     ]
   },
   "scripts": {
