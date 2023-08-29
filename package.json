@@ -36,7 +36,9 @@
     "clean": "rimraf dist",
     "dev": "preconstruct dev",
     "build": "preconstruct build",
-    "test": "jest",
+    "test:client": "jest --testPathIgnorePatterns=.server.test",
+    "test:server": "jest --testPathPattern=.server.test --env=node",
+    "test": "pnpm test:client && pnpm test:server",
     "ci:test": "preconstruct validate && pnpm build && pnpm test",
     "ci:version": "changeset version && pnpm install --no-frozen-lockfile",
     "ci:release": "pnpm ci:test && pnpm changeset publish"
