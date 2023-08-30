@@ -192,7 +192,8 @@ export const useStore = <T extends IState>(store: Store<T>): T => {
     return prevSnapshot.current
   }, [store])
 
-  const snapshot = useSyncExternalStore(subscribe, getSnapshot)
+  /* Pass getSnapshot to the "getServerSnapshot" argument to prevent SSR crash in Next.js */
+  const snapshot = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 
   return new Proxy<Record<any, any>>(
     {},
