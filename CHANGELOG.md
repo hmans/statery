@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.1
+
+### Patch Changes
+
+- f18b084: Fixes SSR issue with Next.js requiring the getServerSnapshot argument with useSyncExternalStore.
+
 ## 0.7.0
 
 ### Minor Changes
